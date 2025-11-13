@@ -31,12 +31,16 @@ export class InMemoryAdapter implements StorageAdapter {
   }
 
   async deleteProduct(id: ID) {
-    for (const [envId, env] of this.environments.entries()) {
-      if (env.productId === id) this.environments.delete(envId);
-    }
-    for (const [flagId, flag] of this.flags.entries()) {
-      if (flag.productId === id) this.flags.delete(flagId);
-    }
+    this.environments
+      .entries()
+      .filter(([envId, env]) => env.productId === id)
+      .forEach(([envId, env]) => this.environments.delete(envId));
+
+    this.flags
+      .entries()
+      .filter(([flagId, flag]) => flag.productId === id)
+      .forEach(([flagId, flag]) => this.flags.delete(flagId));
+
     this.products.delete(id);
   }
 
