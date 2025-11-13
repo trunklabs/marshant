@@ -31,7 +31,6 @@ export interface FeatureFlag {
   id: ID;
   productId: ID;
   envId: ID;
-  key: string;
   label: string;
   description?: string;
   enabled: boolean;

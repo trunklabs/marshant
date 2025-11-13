@@ -1,5 +1,7 @@
 import type { ID, Product, Environment, FeatureFlag } from './types';
 
+export type NewFeatureFlag = Omit<FeatureFlag, 'id' | 'createdAt'> & { id?: ID };
+
 export interface StorageAdapter {
   createProduct(product: Omit<Product, 'id' | 'createdAt'>): Promise<Product>;
   getProduct(id: ID): Promise<Product | null>;
@@ -13,7 +15,7 @@ export interface StorageAdapter {
   deleteEnvironment(id: ID): Promise<void>;
   listEnvironments(productId?: ID): Promise<Environment[]>;
 
-  createFeatureFlag(flag: Omit<FeatureFlag, 'id' | 'createdAt'>): Promise<FeatureFlag>;
+  createFeatureFlag(flag: NewFeatureFlag): Promise<FeatureFlag>;
   getFeatureFlag(id: ID): Promise<FeatureFlag | null>;
   updateFeatureFlag(id: ID, patch: Partial<Omit<FeatureFlag, 'id' | 'createdAt'>>): Promise<FeatureFlag>;
   deleteFeatureFlag(id: ID): Promise<void>;

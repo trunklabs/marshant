@@ -14,15 +14,15 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { productId, envId, key, label, enabled, description, gates } = body;
-    if (!productId || !envId || !key || !label || typeof enabled === 'undefined')
-      return NextResponse.json({ error: 'productId, envId, key, label and enabled are required' }, { status: 400 });
+    const { productId, envId, id, label, enabled, description, gates } = body;
+    if (!productId || !envId || !label || typeof enabled === 'undefined')
+      return NextResponse.json({ error: 'productId, envId, label and enabled are required' }, { status: 400 });
     if (typeof enabled !== 'boolean') return NextResponse.json({ error: 'enabled must be boolean' }, { status: 400 });
 
     const f = await adapter.createFeatureFlag({
+      id: typeof id === 'undefined' ? undefined : String(id),
       productId: String(productId),
       envId: String(envId),
-      key: String(key),
       label: String(label),
       enabled: Boolean(enabled),
       description,

@@ -13,13 +13,15 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   try {
     const body = await req.json();
     const updated = await adapter.updateFeatureFlag(params.id, {
-      key: body.key,
       description: body.description,
       gates: body.gates,
+      label: body.label,
+      enabled: typeof body.enabled === 'undefined' ? undefined : Boolean(body.enabled),
     });
     return NextResponse.json(updated);
-  } catch (err: any) {
-    return NextResponse.json({ error: err?.message ?? String(err) }, { status: 400 });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 }
 

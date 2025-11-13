@@ -1,5 +1,5 @@
 import type { ID, Product, Environment, FeatureFlag, GateAll, GateActors, Gate } from './types';
-import type { StorageAdapter } from './StorageAdapter';
+import type { StorageAdapter, NewFeatureFlag } from './StorageAdapter';
 
 function createId(prefix = 'id'): ID {
   return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
@@ -78,13 +78,26 @@ export class InMemoryAdapter implements StorageAdapter {
     return typeof productId === 'undefined' ? all : all.filter((e) => e.productId === productId);
   }
 
-  async createFeatureFlag(flag: Omit<FeatureFlag, 'id' | 'createdAt'>) {
+  async createFeatureFlag(flag: NewFeatureFlag) {
     if (!this.products.has(flag.productId)) throw new Error(`product not found: ${flag.productId}`);
     if (!this.environments.has(flag.envId)) throw new Error(`environment not found: ${flag.envId}`);
     if (!flag.label || typeof flag.label !== 'string') throw new Error('feature flag label is required');
     if (typeof flag.enabled !== 'boolean') throw new Error('feature flag enabled (boolean) is required');
-    const id = createId('flag');
-    const r: FeatureFlag = { id, createdAt: nowIso(), ...flag, enabled: flag.enabled };
+
+    const id = flag.id ? String(flag.id) : createId('flag');
+    if (this.flags.has(id)) throw new Error(`feature flag already exists: ${id}`);
+
+    const r: FeatureFlag = {
+      id,
+      createdAt: nowIso(),
+      productId: flag.productId,
+      envId: flag.envId,
+      label: flag.label,
+      description: flag.description,
+      enabled: flag.enabled,
+      gates: flag.gates ?? [],
+    };
+
     this.flags.set(id, r);
     return r;
   }
