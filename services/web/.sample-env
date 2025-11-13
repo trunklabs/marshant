@@ -1,5 +1,3 @@
 NODE_ENV=development
-
 DATABASE_ADAPTER="in-memory"
-
 NEXT_PUBLIC_APP_NAME="MarCurry Feature Flag"
