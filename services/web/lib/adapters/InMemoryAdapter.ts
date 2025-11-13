@@ -1,4 +1,4 @@
-import type { ID, Product, Environment, FeatureFlag, GateAll, GateGroups, GateUsers, Gate } from './types';
+import type { ID, Product, Environment, FeatureFlag, GateAll, GateGroups, GateActors, Gate } from './types';
 import type { StorageAdapter } from './StorageAdapter';
 
 function createId(prefix = 'id'): ID {
@@ -141,7 +141,7 @@ export class InMemoryAdapter implements StorageAdapter {
       }
 
       if ((g as Gate).type === 'users') {
-        const gu = g as GateUsers;
+        const gu = g as GateActors;
         if (gu.actorIds.includes(actorId)) return true;
       }
 

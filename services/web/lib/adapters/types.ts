@@ -15,14 +15,14 @@ export interface Environment {
   createdAt: string;
 }
 
-export type Gate = GateAll | GateUsers | GateGroups;
+export type Gate = GateAll | GateActors | GateGroups;
 
 export interface GateAll {
   type: 'all';
   enabled: boolean;
 }
 
-export interface GateUsers {
+export interface GateActors {
   type: 'users';
   actorIds: string[];
 }
