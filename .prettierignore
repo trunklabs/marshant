@@ -1,0 +1,5 @@
+pnpm-workspace.yaml
+pnpm-lock.yaml
+dist/
+.turbo/
+.next/

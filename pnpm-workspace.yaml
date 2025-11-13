@@ -1,0 +1,10 @@
+packages:
+  - services/*
+  - packages/*
+syncInjectedDepsAfterScripts:
+  - build
+injectWorkspacePackages: true
+savePrefix: ""
+overrides:
+  '@opentelemetry/api': '^1.9.0'
+  '@opentelemetry/core': '^1.25.1'
