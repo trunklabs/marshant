@@ -1,4 +1,4 @@
-import type { ID, Product, Environment, FeatureFlag, GateAll, GateGroups, GateActors, Gate } from './types';
+import type { ID, Product, Environment, FeatureFlag, GateAll, GateActors, Gate } from './types';
 import type { StorageAdapter } from './StorageAdapter';
 
 function createId(prefix = 'id'): ID {
@@ -13,10 +13,6 @@ export class InMemoryAdapter implements StorageAdapter {
   private products = new Map<ID, Product>();
   private environments = new Map<ID, Environment>();
   private flags = new Map<ID, FeatureFlag>();
-
-  // Optional: a simple group registry to support 'groups' gates.
-  // groupId -> set of actorIds
-  private groups = new Map<string, Set<string>>();
 
   // Products
   async createProduct(product: Omit<Product, 'id' | 'createdAt'>) {
@@ -144,36 +140,12 @@ export class InMemoryAdapter implements StorageAdapter {
         const gu = g as GateActors;
         if (gu.actorIds.includes(actorId)) return true;
       }
-
-      if ((g as Gate).type === 'groups') {
-        const gg = g as GateGroups;
-        // groups: check if any group contains this user
-        for (const gid of gg.groupIds) {
-          const members = this.groups.get(gid);
-          if (members && members.has(actorId)) return true;
-        }
-      }
     }
 
     return false;
   }
 
-  // Optional convenience: group management
-  async createGroup(groupId: string, actorIds: string[] = []) {
-    this.groups.set(groupId, new Set(actorIds));
-  }
-
-  async addUserToGroup(groupId: string, actorId: string) {
-    const s = this.groups.get(groupId) ?? new Set<string>();
-    s.add(actorId);
-    this.groups.set(groupId, s);
-  }
-
-  async removeUserFromGroup(groupId: string, actorId: string) {
-    const s = this.groups.get(groupId);
-    if (!s) return;
-    s.delete(actorId);
-  }
+  // group management removed
 }
 
 export default InMemoryAdapter;

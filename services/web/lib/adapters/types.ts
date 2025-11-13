@@ -15,7 +15,7 @@ export interface Environment {
   createdAt: string;
 }
 
-export type Gate = GateAll | GateActors | GateGroups;
+export type Gate = GateAll | GateActors;
 
 export interface GateAll {
   type: 'all';
@@ -25,11 +25,6 @@ export interface GateAll {
 export interface GateActors {
   type: 'users';
   actorIds: string[];
-}
-
-export interface GateGroups {
-  type: 'groups';
-  groupIds: string[];
 }
 
 export interface FeatureFlag {
