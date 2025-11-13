@@ -87,8 +87,11 @@ export class InMemoryAdapter implements StorageAdapter {
     // basic validation
     if (!this.products.has(flag.productId)) throw new Error(`product not found: ${flag.productId}`);
     if (!this.environments.has(flag.envId)) throw new Error(`environment not found: ${flag.envId}`);
+    // ensure required fields are present (label and enabled are now mandatory)
+    if (!flag.label || typeof flag.label !== 'string') throw new Error('feature flag label is required');
+    if (typeof flag.enabled !== 'boolean') throw new Error('feature flag enabled (boolean) is required');
     const id = createId('flag');
-    const r: FeatureFlag = { id, createdAt: nowIso(), ...flag };
+    const r: FeatureFlag = { id, createdAt: nowIso(), ...flag, enabled: flag.enabled };
     this.flags.set(id, r);
     return r;
   }
@@ -127,7 +130,8 @@ export class InMemoryAdapter implements StorageAdapter {
   }
 
   private flagEnabledForUser(flag: FeatureFlag, actorId: string) {
-    // If no gates defined -> false
+    if (flag.enabled === false) return false;
+
     if (!flag.gates || flag.gates.length === 0) return false;
 
     for (const g of flag.gates) {
@@ -136,7 +140,7 @@ export class InMemoryAdapter implements StorageAdapter {
         if (ga.enabled) return true;
       }
 
-      if ((g as Gate).type === 'users') {
+      if ((g as Gate).type === 'actors') {
         const gu = g as GateActors;
         if (gu.actorIds.includes(actorId)) return true;
       }

@@ -14,18 +14,23 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { productId, envId, key, description, gates } = body;
-    if (!productId || !envId || !key)
-      return NextResponse.json({ error: 'productId, envId and key are required' }, { status: 400 });
+    const { productId, envId, key, label, enabled, description, gates } = body;
+    if (!productId || !envId || !key || !label || typeof enabled === 'undefined')
+      return NextResponse.json({ error: 'productId, envId, key, label and enabled are required' }, { status: 400 });
+    if (typeof enabled !== 'boolean') return NextResponse.json({ error: 'enabled must be boolean' }, { status: 400 });
+
     const f = await adapter.createFeatureFlag({
       productId: String(productId),
       envId: String(envId),
       key: String(key),
+      label: String(label),
+      enabled: Boolean(enabled),
       description,
       gates: gates ?? [],
     });
     return NextResponse.json(f, { status: 201 });
-  } catch (err: any) {
-    return NextResponse.json({ error: err?.message ?? String(err) }, { status: 400 });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 }

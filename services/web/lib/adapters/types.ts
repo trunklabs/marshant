@@ -23,7 +23,7 @@ export interface GateAll {
 }
 
 export interface GateActors {
-  type: 'users';
+  type: 'actors';
   actorIds: string[];
 }
 
@@ -32,7 +32,9 @@ export interface FeatureFlag {
   productId: ID;
   envId: ID;
   key: string;
+  label: string;
   description?: string;
+  enabled: boolean;
   gates: Gate[];
   createdAt: string;
 }
