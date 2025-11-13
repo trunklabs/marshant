@@ -15,6 +15,7 @@ import type { FeatureFlag } from '@/lib/db/types';
 export function EditFeatureForm({ feature }: { feature: FeatureFlag }) {
   const [submitting, setSubmitting] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [enabled, setEnabled] = useState(feature.enabled);
   const { showToast } = useToast();
 
   async function handleUpdate(formData: FormData) {
@@ -54,10 +55,10 @@ export function EditFeatureForm({ feature }: { feature: FeatureFlag }) {
 
         <div className="flex items-center justify-between">
           <Label htmlFor="enabled">Enabled</Label>
-          <Switch id="enabled" name="enabled" defaultChecked={feature.enabled} />
+          <Switch id="enabled" name="enabled" checked={enabled} onCheckedChange={setEnabled} />
         </div>
 
-        <GatesEditor initialGates={feature.gates || []} />
+        {enabled && <GatesEditor initialGates={feature.gates || []} />}
 
         <Button type="submit" disabled={submitting}>
           <Save className="mr-1 h-4 w-4" />
