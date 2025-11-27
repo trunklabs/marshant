@@ -1,6 +1,6 @@
 'use server';
 
-import { createProduct, deleteProductById, updateProductById } from '@/lib/apiHandlers/apiHandlers';
+import { createProduct, updateProductById, deleteProductById } from '@/lib/apiHandlers/products';
 import { revalidatePath } from 'next/cache';
 
 export async function createProductAction(formData: FormData) {

@@ -3,8 +3,10 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FeaturesTable } from '@/components/feature-usage-table';
 import { CreateFeatureInline } from '@/components/create-feature-inline';
-import { getEnvironmentById, getProductById, listFeatureFlags } from '@/lib/apiHandlers/apiHandlers';
 import { EditEnvironmentForm } from '@/components/edit-environment-form';
+import { getEnvironmentById } from '@/lib/apiHandlers/environments';
+import { listFeatureFlags } from '@/lib/apiHandlers/flags';
+import { getProductById } from '@/lib/apiHandlers/products';
 
 export default async function EnvironmentDetailPage({
   params,

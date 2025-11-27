@@ -2,9 +2,11 @@ import { notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EnvironmentsTable, type EnvironmentRow } from '@/components/environments-table';
 import { CreateEnvironmentInline } from '@/components/create-environment-inline';
-import { getProductById, listEnvironments, listFeatureFlags } from '@/lib/apiHandlers/apiHandlers';
 import { EditProductForm } from '@/components/edit-product-form';
 import Link from 'next/link';
+import { listEnvironments } from '@/lib/apiHandlers/environments';
+import { listFeatureFlags } from '@/lib/apiHandlers/flags';
+import { getProductById } from '@/lib/apiHandlers/products';
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ productId: string }> }) {
   const { productId } = await params;

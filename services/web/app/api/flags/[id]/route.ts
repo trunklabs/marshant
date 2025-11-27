@@ -1,5 +1,5 @@
+import { getFeatureFlagById, updateFeatureFlagById, deleteFeatureFlagById } from '@/lib/apiHandlers/flags';
 import { NextRequest, NextResponse } from 'next/server';
-import { getFeatureFlagById, updateFeatureFlagById, deleteFeatureFlagById } from '@/lib/apiHandlers/apiHandlers';
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

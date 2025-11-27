@@ -1,5 +1,5 @@
+import { getEnvironmentById, updateEnvironmentById, deleteEnvironmentById } from '@/lib/apiHandlers/environments';
 import { NextRequest, NextResponse } from 'next/server';
-import { getEnvironmentById, updateEnvironmentById, deleteEnvironmentById } from '@/lib/apiHandlers/apiHandlers';
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

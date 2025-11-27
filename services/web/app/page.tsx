@@ -3,9 +3,11 @@ import { FeaturesTable } from '@/components/feature-usage-table';
 import { ProductSelector } from '@/components/product-selector';
 import { EnvironmentSelector } from '@/components/environment-selector';
 import { CreateProductInline } from '@/components/create-product-inline';
-import { listFeatureFlags, listProducts, listEnvironments } from '@/lib/apiHandlers/apiHandlers';
 import { Suspense } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { listEnvironments } from '@/lib/apiHandlers/environments';
+import { listProducts } from '@/lib/apiHandlers/products';
+import { listFeatureFlags } from '@/lib/apiHandlers/flags';
 
 export default async function FeatureFlags({
   searchParams,

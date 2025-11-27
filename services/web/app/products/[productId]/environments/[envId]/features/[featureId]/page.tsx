@@ -1,8 +1,10 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getFeatureFlagById, getProductById, getEnvironmentById } from '@/lib/apiHandlers/apiHandlers';
 import { EditFeatureForm } from '@/components/edit-feature-form';
+import { getEnvironmentById } from '@/lib/apiHandlers/environments';
+import { getFeatureFlagById } from '@/lib/apiHandlers/flags';
+import { getProductById } from '@/lib/apiHandlers/products';
 
 export default async function FeatureDetailPage({ params }: { params: Promise<{ featureId: string }> }) {
   const { featureId } = await params;

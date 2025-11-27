@@ -1,6 +1,8 @@
-import { listProducts, listEnvironments, listFeatureFlags } from '@/lib/apiHandlers/apiHandlers';
 import { ProductsTable, type ProductRow } from '@/components/products-table';
 import { CreateProductInline } from '@/components/create-product-inline';
+import { listEnvironments } from '@/lib/apiHandlers/environments';
+import { listFeatureFlags } from '@/lib/apiHandlers/flags';
+import { listProducts } from '@/lib/apiHandlers/products';
 
 export default async function ProductsPage() {
   const products = await listProducts();

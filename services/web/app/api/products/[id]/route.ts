@@ -1,5 +1,5 @@
+import { getProductById, updateProductById, deleteProductById } from '@/lib/apiHandlers/products';
 import { NextRequest, NextResponse } from 'next/server';
-import { getProductById, updateProductById, deleteProductById } from '@/lib/apiHandlers/apiHandlers';
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

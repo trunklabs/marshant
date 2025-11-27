@@ -1,10 +1,12 @@
 import { Flag } from 'lucide-react';
 import { ProductSelector } from '@/components/product-selector';
 import { CreateProductInline } from '@/components/create-product-inline';
-import { listEnvironments, listFeatureFlags, listProducts } from '@/lib/apiHandlers/apiHandlers';
 import { Suspense } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { type EnvironmentRow, EnvironmentsTable } from '@/components/environments-table';
+import { listEnvironments } from '@/lib/apiHandlers/environments';
+import { listFeatureFlags } from '@/lib/apiHandlers/flags';
+import { listProducts } from '@/lib/apiHandlers/products';
 
 export default async function Environments({
   searchParams,

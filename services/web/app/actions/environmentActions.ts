@@ -2,10 +2,10 @@
 
 import {
   createEnvironment,
-  deleteEnvironmentById,
   getEnvironmentById,
   updateEnvironmentById,
-} from '@/lib/apiHandlers/apiHandlers';
+  deleteEnvironmentById,
+} from '@/lib/apiHandlers/environments';
 import { revalidatePath } from 'next/cache';
 
 export async function createEnvironmentAction(formData: FormData) {

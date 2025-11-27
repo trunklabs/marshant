@@ -1,16 +1,14 @@
 'use server';
 
+import { listEnvironments, createEnvironment } from '@/lib/apiHandlers/environments';
 import {
-  createEnvironment,
   createFeatureFlag,
-  createProduct,
-  deleteFeatureFlagById,
   getFeatureFlagById,
-  listEnvironments,
-  listFeatureFlags,
-  listProducts,
+  deleteFeatureFlagById,
   updateFeatureFlagById,
-} from '@/lib/apiHandlers/apiHandlers';
+  listFeatureFlags,
+} from '@/lib/apiHandlers/flags';
+import { listProducts, createProduct } from '@/lib/apiHandlers/products';
 import { revalidatePath } from 'next/cache';
 
 async function ensureDefaultProductAndEnv() {
