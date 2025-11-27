@@ -66,7 +66,7 @@ export function FeaturesTable({
                         <Link
                           href={`products/${feature.productId}/environments/${feature.envId}/features/${feature.id}`}
                         >
-                          <Button size="sm" variant="ghost" className="cursor-pointer no-underline hover:underline">
+                          <Button size="sm" variant="ghost">
                             <Pencil className="mr-1 h-4 w-4" />
                             Edit
                           </Button>
