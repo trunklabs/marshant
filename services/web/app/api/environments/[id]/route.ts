@@ -9,14 +9,10 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 }
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  try {
-    const body = await req.json();
-    const { id } = await params;
-    const updated = await updateEnvironmentById(id, { name: body.name, description: body.description });
-    return NextResponse.json(updated);
-  } catch (err: any) {
-    return NextResponse.json({ error: err?.message ?? String(err) }, { status: 400 });
-  }
+  const body = await req.json();
+  const { id } = await params;
+  const updated = await updateEnvironmentById(id, { name: body.name, description: body.description });
+  return NextResponse.json(updated);
 }
 
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

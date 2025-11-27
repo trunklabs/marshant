@@ -8,7 +8,6 @@ export function EnvironmentSelector({ environments }: { environments: Environmen
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentEnvId = searchParams.get('envId') || '';
-  const productId = searchParams.get('productId') || '';
 
   const handleChange = (envId: string) => {
     const params = new URLSearchParams(searchParams.toString());

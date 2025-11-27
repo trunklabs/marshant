@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ToggleLeft, Boxes } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 export function Navigation(props: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
@@ -20,7 +21,13 @@ export function Navigation(props: React.HTMLAttributes<HTMLElement>) {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
-              <img src="/mar-curry-icon-transparent.png" alt="MarCurry Logo" className="h-15 mr-0 w-24" />
+              <Image
+                src="/mar-curry-icon-transparent.png"
+                alt="MarCurry Logo"
+                width="96"
+                height="60"
+                className="mr-0"
+              />
             </Link>
             <div className="flex gap-1">
               {navItems.map((item) => {
