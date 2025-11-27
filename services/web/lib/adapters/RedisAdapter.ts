@@ -1,6 +1,6 @@
 import { Redis } from 'ioredis';
 import type { Environment, FeatureFlag, GateActors, GateAll, ID, Product } from '../db/types';
-import type { NewFeatureFlag, StorageAdapter } from '../db/StorageAdapter';
+import type { StorageAdapter } from '../db/StorageAdapter';
 import { nowIso, toSnakeCase } from '../db/utils';
 
 const H_PRODUCTS = 'products';
@@ -105,7 +105,7 @@ export class RedisAdapter implements StorageAdapter {
     return typeof productId === 'undefined' ? allEnvs : allEnvs.filter((e) => e.productId === productId);
   }
 
-  async createFeatureFlag(flag: NewFeatureFlag) {
+  async createFeatureFlag(flag: Omit<FeatureFlag, 'id' | 'createdAt'>) {
     const productExists = await this.redis.hexists(H_PRODUCTS, flag.productId);
     if (!productExists) throw new Error(`product not found: ${flag.productId}`);
 
@@ -115,7 +115,7 @@ export class RedisAdapter implements StorageAdapter {
     if (!flag.label || typeof flag.label !== 'string') throw new Error('feature flag label is required');
     if (typeof flag.enabled !== 'boolean') throw new Error('feature flag enabled (boolean) is required');
 
-    const id = flag.id ? String(flag.id) : toSnakeCase(flag.label);
+    const id = toSnakeCase(flag.label);
 
     const flagExists = await this.redis.hexists(H_FLAGS, id);
     if (flagExists) throw new Error(`feature flag already exists: ${id}`);

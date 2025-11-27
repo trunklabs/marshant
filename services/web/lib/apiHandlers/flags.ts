@@ -9,13 +9,13 @@ export async function listFeatureFlags(query: { productId?: string; envId?: stri
 
 export async function createFeatureFlag(body: unknown) {
   const b = (body as Record<string, unknown>) ?? {};
-  const { productId, envId, id, label, enabled, description, gates } = b;
+  const { productId, envId, label, enabled, description, gates } = b;
+
   if (!productId || !envId || !label || typeof enabled === 'undefined')
     throw new Error('productId, envId, label and enabled are required');
   if (typeof enabled !== 'boolean') throw new Error('enabled must be boolean');
 
   return adapter.createFeatureFlag({
-    id: typeof id === 'undefined' ? undefined : String(id),
     productId: String(productId),
     envId: String(envId),
     label: String(label),

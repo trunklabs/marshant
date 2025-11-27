@@ -1,5 +1,5 @@
 import type { Environment, FeatureFlag, GateActors, GateAll, ID, Product } from '../db/types';
-import type { NewFeatureFlag, StorageAdapter } from '../db/StorageAdapter';
+import type { StorageAdapter } from '../db/StorageAdapter';
 import { nowIso, toSnakeCase } from '../db/utils';
 
 export class InMemoryAdapter implements StorageAdapter {
@@ -75,13 +75,13 @@ export class InMemoryAdapter implements StorageAdapter {
     return typeof productId === 'undefined' ? all : all.filter((e) => e.productId === productId);
   }
 
-  async createFeatureFlag(flag: NewFeatureFlag) {
+  async createFeatureFlag(flag: Omit<FeatureFlag, 'id' | 'createdAt'>) {
     if (!this.products.has(flag.productId)) throw new Error(`product not found: ${flag.productId}`);
     if (!this.environments.has(flag.envId)) throw new Error(`environment not found: ${flag.envId}`);
     if (!flag.label || typeof flag.label !== 'string') throw new Error('feature flag label is required');
     if (typeof flag.enabled !== 'boolean') throw new Error('feature flag enabled (boolean) is required');
 
-    const id = flag.id ? String(flag.id) : toSnakeCase(flag.label);
+    const id = toSnakeCase(flag.label);
     if (this.flags.has(id)) throw new Error(`feature flag already exists: ${id}`);
 
     const r: FeatureFlag = {
