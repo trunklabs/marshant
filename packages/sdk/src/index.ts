@@ -1,4 +1,5 @@
 import { type FeatureFlag } from './../../../services/web/lib/db/types.js';
+import { tryCatch } from './utils.js';
 
 export type ClientOptions = {
   productId: string;
@@ -25,17 +26,17 @@ export function createClient(options: ClientOptions): Client {
 
   return {
     async enabledList(actorId: string): Promise<string[]> {
-      try {
-        const flags = await fetchFromWebService('/api/flags/enabled', {
+      const [error, flags] = await tryCatch(
+        fetchFromWebService('/api/flags/enabled', {
           productId: options.productId,
           envId: options.envId,
           actorId,
-        });
-        return flags.map((flag: FeatureFlag) => flag.id);
-      } catch (error) {
-        console.error('Error fetching enabled flags:', error);
-        return [];
-      }
+        })
+      );
+
+      if (error) return [];
+
+      return flags.map((flag: FeatureFlag) => flag.id);
     },
   };
 }
