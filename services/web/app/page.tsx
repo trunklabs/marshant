@@ -27,7 +27,7 @@ export default async function FeatureFlags({
 
   return (
     <div className="container mx-auto py-8">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex min-h-12 items-center justify-between">
         <div>
           <div className="mt-1 flex items-center gap-2">
             <p className="text-muted-foreground">Overview of your feature flag management</p>

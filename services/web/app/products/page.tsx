@@ -21,11 +21,15 @@ export default async function ProductsPage() {
 
   return (
     <div className="container mx-auto py-8">
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex min-h-12 items-center justify-between">
         <div>
-          <p className="text-muted-foreground mt-1">Manage your products</p>
+          <div className="mt-1 flex items-center gap-2">
+            <p className="text-muted-foreground">Manage your products</p>
+          </div>
         </div>
-        <CreateProductInline />
+        <div className="flex items-center gap-4">
+          <CreateProductInline />
+        </div>
       </div>
 
       <ProductsTable items={rows} />
