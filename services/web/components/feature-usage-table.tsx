@@ -20,16 +20,13 @@ function truncateText(text: string | undefined, maxLength: number): string {
 
 export function FeaturesTable({
   features,
-  environments = [],
   allowDelete,
   actions,
 }: {
   features: FeatureFlag[];
-  environments?: Environment[];
   allowDelete: boolean;
   actions?: (f: FeatureFlag) => React.ReactNode;
 }) {
-  const envMap = new Map(environments.map((e) => [e.id, e]));
   return (
     <Card>
       <CardHeader>
@@ -53,12 +50,11 @@ export function FeaturesTable({
             </TableHeader>
             <TableBody>
               {features.map((feature) => {
-                const env = envMap.get(feature.envId);
                 return (
                   <TableRow key={feature.id} className="hover:bg-muted transition-colors">
                     <TableCell className="font-medium">{feature.label}</TableCell>
                     <TableCell className="text-muted-foreground">{feature.productId ?? '-'}</TableCell>
-                    <TableCell className="text-muted-foreground">{env?.name ?? '-'}</TableCell>
+                    <TableCell className="text-muted-foreground">{feature.envId ?? '-'}</TableCell>
                     <TableCell className="text-muted-foreground">{truncateText(feature.description, 50)}</TableCell>
                     <TableCell>
                       <Badge variant={feature.enabled ? 'default' : 'secondary'}>

@@ -59,7 +59,7 @@ export default async function FeatureFlags({
           <CreateProductInline />
         </div>
       ) : (
-        <FeaturesTable features={features} environments={allEnvironments} allowDelete={true} />
+        <FeaturesTable features={features} allowDelete={true} />
       )}
     </div>
   );
