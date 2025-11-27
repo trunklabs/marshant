@@ -4,17 +4,28 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import type { Product } from '@/lib/db/types';
 
-export function ProductSelector({ products }: { products: Product[] }) {
+export function ProductSelector({
+  products,
+  isEnvironmentPage = false,
+}: {
+  products: Product[];
+  isEnvironmentPage?: boolean;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentProductId = searchParams.get('productId') || '';
 
   const handleChange = (productId: string) => {
+    const environmentsUrl = '/environments';
+    const rootUrl = '/';
+    const urlToUse = isEnvironmentPage ? environmentsUrl : rootUrl;
+
     if (productId === 'all') {
-      router.push('/');
-    } else {
-      router.push(`/?productId=${productId}`);
+      router.push(urlToUse);
+      return;
     }
+
+    router.push(`${urlToUse}?productId=${productId}`);
   };
 
   if (products.length === 0) {

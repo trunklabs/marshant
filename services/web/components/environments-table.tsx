@@ -22,7 +22,7 @@ export function EnvironmentsTable({
     <Card>
       <CardHeader>
         <CardTitle>Environments</CardTitle>
-        <CardDescription>Manage environments for this product</CardDescription>
+        <CardDescription>List of all environments and their usage</CardDescription>
       </CardHeader>
       <CardContent>
         {items.length === 0 ? (
@@ -32,8 +32,9 @@ export function EnvironmentsTable({
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
-                <TableHead>Description</TableHead>
+                <TableHead>Product</TableHead>
                 <TableHead>Features</TableHead>
+                <TableHead>Description</TableHead>
                 <TableHead className="w-[1%]"></TableHead>
               </TableRow>
             </TableHeader>
@@ -41,8 +42,9 @@ export function EnvironmentsTable({
               {items.map((row) => (
                 <TableRow key={row.environment.id}>
                   <TableCell className="font-medium">{row.environment.name}</TableCell>
-                  <TableCell className="text-muted-foreground">{row.environment.description ?? ''}</TableCell>
+                  <TableCell>{row.environment.productId}</TableCell>
                   <TableCell>{row.featureCount}</TableCell>
+                  <TableCell className="text-muted-foreground">{row.environment.description ?? ''}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex justify-end gap-2">
                       <Link href={`/products/${row.environment.productId}/environments/${row.environment.id}`}>

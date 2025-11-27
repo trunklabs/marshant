@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ToggleLeft, Boxes } from 'lucide-react';
+import { ToggleLeft, Boxes, Layers,  } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
@@ -12,7 +12,7 @@ export function Navigation(props: React.HTMLAttributes<HTMLElement>) {
   const navItems = [
     { href: '/', label: 'Feature Flags', icon: ToggleLeft },
     { href: '/products', label: 'Products', icon: Boxes },
-    // { href: '/features', label: 'Features', icon: Flag },
+    { href: '/environments', label: 'Environments', icon: Layers },
   ];
 
   return (
