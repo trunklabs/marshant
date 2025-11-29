@@ -32,6 +32,10 @@ Run
 docker run --rm -p 3000:3000 -e PORT=3000 --name marcurry-web marcurry-web
 ```
 
+# Usage examples
+
+See [docs](./docs/http-examples)
+
 # ERD
 
 ![](./docs/erd.png)
