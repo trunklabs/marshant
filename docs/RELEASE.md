@@ -10,6 +10,7 @@ The `release.yml` workflow automates the entire release process using [changeset
 
 1. **On every push to `main`**: The workflow runs and uses the [changesets/action](https://github.com/changesets/action) to:
    - Create or update a "Version Packages" pull request that bundles all pending changesets
+   - **Version process**: Runs `changeset version` to update package.json files, then runs `pnpm install --no-frozen-lockfile` to update pnpm-lock.yaml with new dependency versions
    - When that PR is merged, it publishes packages and creates git tags
 
 2. **Docker Image Building**: After packages are published (when the release PR is merged):
