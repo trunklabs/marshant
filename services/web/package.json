@@ -2,6 +2,7 @@
   "name": "@marcurry/web",
   "version": "0.0.0",
   "private": true,
+  "dockerTarget": "web",
   "scripts": {
     "dev": "next dev -p 3005",
     "build": "next build",

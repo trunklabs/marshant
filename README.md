@@ -27,8 +27,13 @@ Marcurry Feature Flag is a modern, self-hosted feature flag management system de
 
 ## 📚 Documentation
 
+### Development
 - **[Contributing Guide](./docs/CONTRIBUTING.md)** - Set up your development environment
 - **[API Examples](./docs/http-examples)** - HTTP request examples and usage
+
+### CI/CD & Workflows
+
+- **[Release Workflow](./docs/RELEASE.md)** - Versioning, publishing, and Docker image building
 
 ## 🤝 Contributing
 
