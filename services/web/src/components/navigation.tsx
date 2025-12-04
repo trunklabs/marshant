@@ -6,6 +6,7 @@ import { Boxes, ToggleRight } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { ThemeToggle } from '../../components/ui/theme-toggle';
 
 export function Navigation(props: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
@@ -41,6 +42,9 @@ export function Navigation(props: React.HTMLAttributes<HTMLElement>) {
                 );
               })}
             </div>
+          </div>
+          <div className="right-0 flex gap-2">
+            <ThemeToggle />
           </div>
         </div>
       </div>
