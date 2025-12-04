@@ -4,6 +4,8 @@ import { EditProductDialog } from '@/components/edit-product-dialog';
 import { listProjectsAction, listEnvironmentsAction, listFlagsAction } from '@/app/actions';
 import type { Project } from '@marcurry/core';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProductsPage() {
   const products: Project[] = await listProjectsAction();
 

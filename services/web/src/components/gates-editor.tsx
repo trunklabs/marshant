@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { X, Plus, ChevronUp, ChevronDown } from 'lucide-react';
-import type { Gate, FlagValueType } from '@marcurry/core';
+import type { Gate, FlagValueType, FlagValueTypeMap } from '@marcurry/core';
 
 interface GatesEditorProps {
   initialGates: Gate[];
@@ -79,10 +79,10 @@ export function GatesEditor({ initialGates, valueType, onChange, onValidationCha
         return { ...updated, actorIds: [] } as Gate;
       }
       if (updates.type === 'boolean' && gate.type !== 'boolean') {
-        const { actorIds, ...rest } = updated as any;
+        const { actorIds: _actorIds, ...rest } = updated as Gate & { actorIds?: string[] };
         return rest as Gate;
       }
-      return updated;
+      return updated as Gate;
     });
     updateGates(newGates);
   };
@@ -263,7 +263,12 @@ function ActorIdsInput({ actorIds, onChange }: { actorIds: string[]; onChange: (
   );
 }
 
-function renderValueInput(gate: Gate, index: number, valueType: FlagValueType, onChange: (value: any) => void) {
+function renderValueInput(
+  gate: Gate,
+  index: number,
+  valueType: FlagValueType,
+  onChange: (value: FlagValueTypeMap[FlagValueType]) => void
+) {
   const id = `gate-${index}-value`;
 
   switch (valueType) {
@@ -316,7 +321,7 @@ function renderValueInput(gate: Gate, index: number, valueType: FlagValueType, o
   }
 }
 
-function getDefaultValue(valueType: FlagValueType): any {
+function getDefaultValue(valueType: FlagValueType): FlagValueTypeMap[FlagValueType] {
   switch (valueType) {
     case 'boolean':
       return true;

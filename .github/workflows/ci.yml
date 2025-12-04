@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required for turborepo to detect affected packages
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm run format:check
+
+      - name: Lint affected packages
+        run: pnpm exec turbo lint --filter='...[origin/main]' --continue
+
+      - name: Type check affected packages
+        run: pnpm exec turbo typecheck --filter='...[origin/main]' --continue
+
+      - name: Test affected packages
+        run: pnpm exec turbo test --filter='...[origin/main]' --continue
+
+      - name: Build affected packages
+        run: pnpm exec turbo build --filter='...[origin/main]'

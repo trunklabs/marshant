@@ -70,7 +70,7 @@ export class FlagConfigRepository {
         environmentId: data.environmentId,
         enabled: data.enabled,
         defaultValue: data.defaultValue,
-        gates: data.gates as any,
+        gates: data.gates as Gate[],
       })
       .returning();
 
@@ -85,7 +85,7 @@ export class FlagConfigRepository {
       .update(flagEnvironmentConfigs)
       .set({
         ...data,
-        gates: data.gates as any,
+        gates: data.gates as Gate[] | undefined,
         updatedAt: new Date(),
       })
       .where(eq(flagEnvironmentConfigs.id, id))

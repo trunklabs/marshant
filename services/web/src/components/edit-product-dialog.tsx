@@ -40,7 +40,8 @@ export function EditProductDialog({ product }: { product: Project }) {
       try {
         const data = await listEnvironmentsAction(product.id);
         if (!cancelled) setEnvs(data);
-      } catch (e) {
+      } catch (_e) {
+        console.log(_e);
         showToast('Failed to load environments', 'error');
       } finally {
         if (!cancelled) setLoadingEnvs(false);

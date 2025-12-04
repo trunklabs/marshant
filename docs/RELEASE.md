@@ -81,6 +81,7 @@ ghcr.io/<github-username>/<repo-name>/<package-short-name>:<version>
 ### Tags
 
 Each image receives multiple tags:
+
 - `<major>.<minor>.<patch>` - Full semantic version
 - `<major>.<minor>` - Major and minor version
 - `<major>` - Major version only
@@ -89,6 +90,7 @@ Each image receives multiple tags:
 ### Example
 
 For `@marcurry/web` version `1.2.3`:
+
 - `ghcr.io/mark-omarov/marcurry-feature-flag/web:1.2.3`
 - `ghcr.io/mark-omarov/marcurry-feature-flag/web:1.2`
 - `ghcr.io/mark-omarov/marcurry-feature-flag/web:1`
@@ -97,6 +99,7 @@ For `@marcurry/web` version `1.2.3`:
 ## Private Packages
 
 The workflow works with private packages (those with `"private": true`). Private packages are:
+
 - Still versioned by changesets
 - Can have Docker images built and published
 - Won't be published to npm (as intended)
@@ -108,6 +111,7 @@ This allows you to version internal services and libraries while only publishing
 ### Image not being built
 
 Check that:
+
 1. The package has a `dockerTarget` field in `package.json`
 2. The Dockerfile has a target matching the `dockerTarget` value
 3. The package was actually versioned in the release (check the changesets output)

@@ -17,7 +17,7 @@ import { Plus, X, Sparkles } from 'lucide-react';
 import { useToast } from '@/components/ui/toast';
 import { useRouter } from 'next/navigation';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import type { Project, FlagValueType } from '@marcurry/core';
+import type { Project, FlagValueType, FlagValueTypeMap } from '@marcurry/core';
 import { createFlagAction } from '@/app/actions/flags';
 import { slugify } from '@/lib/utils';
 
@@ -95,7 +95,8 @@ export function CreateFlagInline(props: { projectId?: string; envId?: string; pr
             parsedDefaultValue = JSON.parse(defaultValue);
             break;
         }
-      } catch (err) {
+      } catch (_err) {
+        console.log(_err);
         showToast(`Invalid default value for type ${valueType}`, 'error');
         return;
       }
@@ -105,7 +106,7 @@ export function CreateFlagInline(props: { projectId?: string; envId?: string; pr
         key: key.trim(),
         name: name.trim(),
         valueType,
-        defaultValue: parsedDefaultValue as any,
+        defaultValue: parsedDefaultValue as FlagValueTypeMap[FlagValueType],
       });
       setOpen(false);
       showToast('Flag created successfully');

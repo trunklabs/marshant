@@ -3,3 +3,4 @@ pnpm-lock.yaml
 dist/
 .turbo/
 .next/
+*.md
