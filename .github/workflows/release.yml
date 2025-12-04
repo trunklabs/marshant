@@ -37,7 +37,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         with:
-          version: pnpm exec changeset version && pnpm install --no-frozen-lockfile
+          version: pnpm run version
           publish: pnpm exec changeset publish
           title: 'chore: version packages'
           commit: 'chore: version packages'
