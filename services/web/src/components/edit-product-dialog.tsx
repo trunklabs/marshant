@@ -132,7 +132,6 @@ export function EditProductDialog({ product }: { product: Project }) {
             <Label htmlFor="name">Name</Label>
             <Input id="name" name="name" defaultValue={product.name} />
           </div>
-          {/* Description is not part of the core Project model; keeping the field for future use but not persisted */}
           <div className="flex justify-end">
             <Button type="submit" disabled={saving}>
               {saving ? 'Saving...' : 'Save'}
