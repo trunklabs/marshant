@@ -16,8 +16,8 @@
     "build": "tsup src/index.ts --format cjs,esm --dts --clean"
   },
   "devDependencies": {
-    "@types/node": "^20.19.25",
+    "@types/node": "20.19.25",
     "tsup": "8.5.1",
-    "typescript": "^5"
+    "typescript": "5.9.3"
   }
 }

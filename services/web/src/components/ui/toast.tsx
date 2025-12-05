@@ -52,7 +52,7 @@ function Toast({ message, type, onClose }: { message: string; type: ToastType; o
   return (
     <div
       role="alert"
-      className={`animate-in slide-in-from-right-full fade-in fixed right-4 top-4 z-50 flex w-full max-w-xs items-start gap-3 rounded-lg border p-3 shadow-lg backdrop-blur-md transition-all duration-300 ease-out ${variant.container} `}
+      className={`animate-in slide-in-from-right-full fade-in fixed top-4 right-4 z-50 flex w-full max-w-xs items-start gap-3 rounded-lg border p-3 shadow-lg backdrop-blur-md transition-all duration-300 ease-out ${variant.container} `}
     >
       <div className="flex-shrink-0 pt-0.5">{variant.icon}</div>
       <div className="flex-1 space-y-0.5">
