@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Plus, X, Sparkles } from 'lucide-react';
 import { createProjectAction } from '@/app/actions/projects';
 import { createEnvironmentAction } from '@/app/actions/environments';
@@ -25,8 +24,8 @@ export function CreateProjectInline() {
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const { showToast } = useToast();
-  const [envRows, setEnvRows] = useState<Array<{ id: string; name: string; key: string; description?: string }>>([
-    { id: crypto.randomUUID(), name: '', key: '', description: '' },
+  const [envRows, setEnvRows] = useState<Array<{ id: string; name: string; key: string }>>([
+    { id: crypto.randomUUID(), name: '', key: '' },
   ]);
 
   const trimmedEnvs = envRows.map((r) => ({ name: r.name.trim(), key: r.key.trim() })).filter((e) => e.name.length > 0);
@@ -39,10 +38,10 @@ export function CreateProjectInline() {
   const canSubmit = hasAtLeastOneEnv && !hasDuplicateNames && !hasDuplicateKeys && !hasEmptyKeys && !submitting;
 
   function addEnvRow() {
-    setEnvRows((rows) => [...rows, { id: crypto.randomUUID(), name: '', key: '', description: '' }]);
+    setEnvRows((rows) => [...rows, { id: crypto.randomUUID(), name: '', key: '' }]);
   }
 
-  function updateEnvRow(id: string, patch: Partial<{ name: string; key: string; description?: string }>) {
+  function updateEnvRow(id: string, patch: Partial<{ name: string; key: string }>) {
     setEnvRows((rows) =>
       rows.map((r) => {
         if (r.id !== id) return r;
@@ -70,9 +69,7 @@ export function CreateProjectInline() {
         return;
       }
 
-      const envs = envRows
-        .map((r) => ({ name: r.name.trim(), key: r.key.trim(), description: r.description?.trim() || undefined }))
-        .filter((r) => r.name.length > 0);
+      const envs = envRows.map((r) => ({ name: r.name.trim(), key: r.key.trim() })).filter((r) => r.name.length > 0);
       if (envs.length === 0) {
         showToast('At least one environment is required', 'error');
         return;
@@ -98,7 +95,7 @@ export function CreateProjectInline() {
       }
       setOpen(false);
       showToast('Project created successfully');
-      setEnvRows([{ id: crypto.randomUUID(), name: '', key: '', description: '' }]);
+      setEnvRows([{ id: crypto.randomUUID(), name: '', key: '' }]);
     } finally {
       setSubmitting(false);
     }
@@ -125,11 +122,6 @@ export function CreateProjectInline() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea id="description" name="description" placeholder="Optional description" />
-          </div>
-
-          <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label>Environments</Label>
               <Button type="button" size="sm" variant="outline" onClick={addEnvRow}>
@@ -141,9 +133,7 @@ export function CreateProjectInline() {
                 type="hidden"
                 name="environments"
                 value={JSON.stringify(
-                  envRows
-                    .map((r) => ({ name: r.name.trim(), description: r.description?.trim() || undefined }))
-                    .filter((r) => r.name.length > 0)
+                  envRows.map((r) => ({ name: r.name.trim(), key: r.key.trim() })).filter((r) => r.name.length > 0)
                 )}
               />
               {envRows.map((row) => {
