@@ -1,5 +1,5 @@
 ---
-'@marcurry/web': minor
+'@marcurry/web': patch
 ---
 
 New Light & Dark Theme Toggle
