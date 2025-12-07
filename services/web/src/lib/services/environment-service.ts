@@ -1,6 +1,6 @@
 import { EnvironmentRepository } from '@/lib/repositories/environment-repository';
 import { ProjectRepository } from '../repositories/project-repository';
-import { EnvironmentNotFoundError, ProjectNotFoundError } from '@marcurry/core';
+import { EnvironmentNotFoundError, ProjectNotFoundError, validateEnvironment } from '@marcurry/core';
 import type { Environment, EnvironmentId, ProjectId } from '@marcurry/core';
 
 export class EnvironmentService {
@@ -33,6 +33,8 @@ export class EnvironmentService {
   }
 
   async createEnvironment(data: { projectId: ProjectId; name: string; key: string }): Promise<Environment> {
+    validateEnvironment(data);
+
     const project = await this.projectRepo.findById(data.projectId);
     if (!project) {
       throw new ProjectNotFoundError(data.projectId);
@@ -42,7 +44,9 @@ export class EnvironmentService {
   }
 
   async updateEnvironment(id: EnvironmentId, data: { name?: string; key?: string }): Promise<Environment> {
-    await this.getEnvironment(id);
+    const existing = await this.getEnvironment(id);
+    const merged: Environment = { ...existing, ...data } as Environment;
+    validateEnvironment(merged);
     return this.environmentRepo.update(id, data);
   }
 

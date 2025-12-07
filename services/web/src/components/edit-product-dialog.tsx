@@ -77,6 +77,9 @@ export function EditProductDialog({ product }: { product: Project }) {
         setEnvs(data);
         showToast('Environment added');
       }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to add environment';
+      showToast(message, 'error');
     } finally {
       setSaving(false);
     }
@@ -95,6 +98,9 @@ export function EditProductDialog({ product }: { product: Project }) {
       const data = await listEnvironmentsAction(product.id);
       setEnvs(data);
       showToast('Environment updated');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Failed to update environment';
+      showToast(message, 'error');
     } finally {
       setSaving(false);
     }

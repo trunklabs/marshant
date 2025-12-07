@@ -25,6 +25,8 @@ export { matchesGate } from './evaluation/gate-matcher.js';
 
 export { validateFlag, FlagValidationError } from './validation/flag-validator.js';
 export { validateGates, GateValidationError } from './validation/gate-validator.js';
+export { validateEnvironment, EnvironmentValidationError } from './validation/environment-validator.js';
+export { KEY_REGEX, validateKey } from './validation/key-validator.js';
 
 export {
   FlagNotFoundError,
