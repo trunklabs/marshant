@@ -1,0 +1,12 @@
+### Evaluate Flag
+POST http://localhost:3005/api/v1/flags/evaluate
+Content-Type: application/json
+X-API-Key: <your-api-key>
+
+{
+  "environmentKey": "<environment-key>",
+  "flagKey": "<flag-key>",
+  "actor": {
+    "id": "<actor-id>"
+  }
+}

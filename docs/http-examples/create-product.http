@@ -1,8 +1,0 @@
-### Create a Product
-POST http://localhost:3000/api/products
-Content-Type: application/json
-
-{
-  "name": "gsr",
-  "description": "Description for GSR product"
-}
