@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "prepare": "husky",
     "preinstall": "npx only-allow pnpm",
     "format:check": "prettier --check . --cache",
     "format:write": "prettier --write . --cache",
@@ -18,6 +19,7 @@
   "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a",
   "devDependencies": {
     "@changesets/cli": "2.29.8",
+    "husky": "9.1.7",
     "prettier": "3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "turbo": "2.6.3",
