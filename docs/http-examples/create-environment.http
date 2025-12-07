@@ -1,9 +1,0 @@
-### Create an Environment
-POST http://localhost:3000/api/environments
-Content-Type: application/json
-
-{
-  "productId": "<product-id>",
-  "name": "local",
-  "description": "Local environment for GSR"
-}
