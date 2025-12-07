@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -10,13 +10,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from '@/ui/dialog';
+import { Input } from '@/ui/input';
+import { Label } from '@/ui/label';
 import { Plus, X, Sparkles } from 'lucide-react';
-import { useToast } from '@/components/ui/toast';
+import { useToast } from '@/ui/toast';
 import { useRouter } from 'next/navigation';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
 import type { Project, FlagValueType, FlagValueTypeMap } from '@marcurry/core';
 import { createFlagAction } from '@/app/actions/flags';
 import { slugify } from '@/lib/utils';

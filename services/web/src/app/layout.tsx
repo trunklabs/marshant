@@ -1,9 +1,10 @@
+import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Navigation } from '@/components/navigation';
-import { ToastProvider } from '@/components/ui/toast';
-import { ThemeProvider } from '../../components/ui/theme-provider';
+import { ToastProvider } from '@/ui/toast';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -16,14 +17,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'MarCurry - Feature Flag Management',
+  title: 'Marcurry - Feature Flag Management',
   description: 'Feature Flag Management Solution',
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
