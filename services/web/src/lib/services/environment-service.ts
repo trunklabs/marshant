@@ -48,6 +48,11 @@ export class EnvironmentService {
     return this.environmentRepo.create(data);
   }
 
+  /**
+   * Updates an environment. Validates the merged result of existing data
+   * with updates to ensure the final state is valid.
+   * @throws {EnvironmentValidationError} When merged data has invalid key/name
+   */
   async updateEnvironment(id: EnvironmentId, data: { name?: string; key?: string }): Promise<Environment> {
     const existing = await this.getEnvironment(id);
     const merged: Environment = { ...existing, ...data } as Environment;
@@ -55,6 +60,11 @@ export class EnvironmentService {
     return this.environmentRepo.update(id, data);
   }
 
+  /**
+   * Deletes an environment. A project must always have at least one environment,
+   * so deleting the last environment is not allowed.
+   * @throws {CannotDeleteLastEnvironmentError} When attempting to delete the only environment
+   */
   async deleteEnvironment(id: EnvironmentId): Promise<void> {
     const environment = await this.getEnvironment(id);
 

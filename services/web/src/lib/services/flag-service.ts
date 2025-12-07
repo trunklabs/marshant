@@ -114,6 +114,12 @@ export class FlagService {
     return this.configRepo.findByFlagId(flagId);
   }
 
+  /**
+   * Creates a flag configuration for a specific environment.
+   * Each flag can have different settings (enabled, default value, gates)
+   * per environment (e.g., enabled in staging but disabled in production).
+   * @throws {GateValidationError} When gates array contains invalid gate configuration
+   */
   async createFlagConfig(data: {
     flagId: FlagId;
     environmentId: EnvironmentId;
@@ -171,6 +177,11 @@ export class FlagService {
     await this.configRepo.delete(id);
   }
 
+  /**
+   * Evaluates a flag for a given actor in a specific environment.
+   * Returns the flag's enabled state and resolved value based on
+   * the flag's gates (targeting rules) and default value.
+   */
   async evaluateFlag(
     projectId: ProjectId,
     environmentKey: string,

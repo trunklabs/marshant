@@ -30,6 +30,14 @@ export class ProjectService {
     return this.projectRepo.findAll();
   }
 
+  /**
+   * Creates a new project with its initial environments.
+   * Project and environments are created atomically - if any environment
+   * fails validation or creation, the entire operation is rolled back.
+   * @throws {ProjectMustHaveEnvironmentError} When no environments provided
+   * @throws {ProjectValidationError} When project name is invalid
+   * @throws {EnvironmentValidationError} When any environment has invalid key/name
+   */
   async createProject(data: { name: string; environments: Array<{ name: string; key: string }> }): Promise<Project> {
     if (!data.environments || data.environments.length === 0) {
       throw new ProjectMustHaveEnvironmentError();
