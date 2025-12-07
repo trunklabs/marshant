@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -10,11 +10,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from '@/ui/dialog';
+import { Input } from '@/ui/input';
+import { Label } from '@/ui/label';
 import { Pencil, Plus, Trash2, X, Key, RefreshCw, Copy, Check } from 'lucide-react';
-import { useToast } from '@/components/ui/toast';
+import { useToast } from '@/ui/toast';
 import { updateProjectAction } from '@/app/actions/projects';
 import {
   createEnvironmentAction,

@@ -2,7 +2,7 @@ import { Flag } from 'lucide-react';
 import { ProjectSelector } from '@/components/project-selector';
 import { CreateProjectInline } from '@/components/create-project-inline';
 import { Suspense } from 'react';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/ui/badge';
 import { CreateFlagInline } from '@/components/create-flag-inline';
 import { FlagEnvMatrix } from '@/components/flag-env-matrix';
 import { listProjectsAction, listEnvironmentsAction, listFlagsAction, listFlagConfigsAction } from '@/app/actions';

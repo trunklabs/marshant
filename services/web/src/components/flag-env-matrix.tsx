@@ -1,12 +1,12 @@
 'use client';
 
 import { useMemo, useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Card, CardContent } from '@/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table';
+import { Badge } from '@/ui/badge';
+import { Button } from '@/ui/button';
+import { Switch } from '@/ui/switch';
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog';
 import { GatesEditor } from '@/components/gates-editor';
 import { createFlagConfigAction, updateFlagConfigAction } from '@/app/actions/flags';
 import type { Environment, Flag, FlagEnvironmentConfig, Gate, FlagValueType, FlagValueTypeMap } from '@marcurry/core';
