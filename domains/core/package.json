@@ -13,6 +13,7 @@
     }
   },
   "scripts": {
+    "prepare": "tsup src/index.ts --format cjs,esm --dts --clean",
     "build": "tsup src/index.ts --format cjs,esm --dts --clean",
     "test": "vitest run"
   },
