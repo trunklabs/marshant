@@ -1,5 +1,6 @@
 import { ProjectRepository } from '@/lib/repositories/project-repository';
 import { EnvironmentRepository } from '@/lib/repositories/environment-repository';
+import { db } from '@/db';
 import {
   ProjectNotFoundError,
   ProjectMustHaveEnvironmentError,
@@ -40,17 +41,22 @@ export class ProjectService {
       validateEnvironment(env);
     }
 
-    const project = await this.projectRepo.create({ name: data.name });
+    return db.transaction(async (tx) => {
+      const project = await this.projectRepo.create({ name: data.name }, tx);
 
-    for (const env of data.environments) {
-      await this.environmentRepo.create({
-        projectId: project.id,
-        name: env.name,
-        key: env.key,
-      });
-    }
+      for (const env of data.environments) {
+        await this.environmentRepo.create(
+          {
+            projectId: project.id,
+            name: env.name,
+            key: env.key,
+          },
+          tx
+        );
+      }
 
-    return project;
+      return project;
+    });
   }
 
   async updateProject(id: ProjectId, data: { name?: string }): Promise<Project> {

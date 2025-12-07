@@ -1,5 +1,5 @@
 import { eq } from 'drizzle-orm';
-import { db, projects, type ProjectRow } from '@/db';
+import { db, projects, type ProjectRow, type Transaction } from '@/db';
 import type { Project, ProjectId } from '@marcurry/core';
 
 export class ProjectRepository {
@@ -19,8 +19,9 @@ export class ProjectRepository {
     return results.map(this.toDomain);
   }
 
-  async create(data: Omit<Project, 'id'>): Promise<Project> {
-    const [result] = await db
+  async create(data: Omit<Project, 'id'>, tx?: Transaction): Promise<Project> {
+    const executor = tx ?? db;
+    const [result] = await executor
       .insert(projects)
       .values({
         name: data.name,

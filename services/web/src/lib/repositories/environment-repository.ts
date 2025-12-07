@@ -1,5 +1,5 @@
 import { eq, and } from 'drizzle-orm';
-import { db, environments, type EnvironmentRow } from '@/db';
+import { db, environments, type EnvironmentRow, type Transaction } from '@/db';
 import type { Environment, EnvironmentId, ProjectId } from '@marcurry/core';
 
 export class EnvironmentRepository {
@@ -28,8 +28,9 @@ export class EnvironmentRepository {
     return results.map(this.toDomain);
   }
 
-  async create(data: Omit<Environment, 'id'>): Promise<Environment> {
-    const [result] = await db
+  async create(data: Omit<Environment, 'id'>, tx?: Transaction): Promise<Environment> {
+    const executor = tx ?? db;
+    const [result] = await executor
       .insert(environments)
       .values({
         projectId: data.projectId,
