@@ -97,14 +97,14 @@ importers:
         specifier: 17.2.3
         version: 17.2.3
       drizzle-orm:
-        specifier: 0.44.7
-        version: 0.44.7(@types/pg@8.16.0)(pg@8.16.3)
+        specifier: 0.45.1
+        version: 0.45.1(@types/pg@8.16.0)(pg@8.16.3)
       ioredis:
         specifier: 5.8.2
         version: 5.8.2
       lucide-react:
-        specifier: 0.553.0
-        version: 0.553.0(react@19.2.3)
+        specifier: 0.561.0
+        version: 0.561.0(react@19.2.3)
       next:
         specifier: 16.0.10
         version: 16.0.10(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -2177,8 +2177,8 @@ packages:
     resolution: {integrity: sha512-O9EC/miwdnRDY10qRxM8P3Pg8hXe3LyU4ZipReKOgTwn4OqANmftj8XJz1UPUAS6NMHf0E2htjsbQujUTkncCg==}
     hasBin: true
 
-  drizzle-orm@0.44.7:
-    resolution: {integrity: sha512-quIpnYznjU9lHshEOAYLoZ9s3jweleHlZIAWR/jX9gAWNg/JhQ1wj0KGRf7/Zm+obRrYd9GjPVJg790QY9N5AQ==}
+  drizzle-orm@0.45.1:
+    resolution: {integrity: sha512-Te0FOdKIistGNPMq2jscdqngBRfBpC8uMFVwqjf6gtTVJHIQ/dosgV/CLBU2N4ZJBsXL5savCba9b0YJskKdcA==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -2983,8 +2983,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@0.553.0:
-    resolution: {integrity: sha512-BRgX5zrWmNy/lkVAe0dXBgd7XQdZ3HTf+Hwe3c9WK6dqgnj9h+hxV+MDncM88xDWlCq27+TKvHGE70ViODNILw==}
+  lucide-react@0.561.0:
+    resolution: {integrity: sha512-Y59gMY38tl4/i0qewcqohPdEbieBy7SovpBL9IFebhc2mDd8x4PZSOsiFRkpPcOq6bj1r/mjH/Rk73gSlIJP2A==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -5746,7 +5746,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.44.7(@types/pg@8.16.0)(pg@8.16.3):
+  drizzle-orm@0.45.1(@types/pg@8.16.0)(pg@8.16.3):
     optionalDependencies:
       '@types/pg': 8.16.0
       pg: 8.16.3
@@ -6670,7 +6670,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@0.553.0(react@19.2.3):
+  lucide-react@0.561.0(react@19.2.3):
     dependencies:
       react: 19.2.3
 
