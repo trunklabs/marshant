@@ -54,7 +54,7 @@ export async function updateEnvironmentAction(
   return environment;
 }
 
-export async function deleteEnvironmentAction(id: string, projectId: string): Promise<void> {
+export async function deleteEnvironmentAction(id: string): Promise<void> {
   await getSessionContext();
   const environmentService = new EnvironmentService();
   await environmentService.deleteEnvironment(id);

@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 export function OrganizationPrompt() {
   const router = useRouter();
 
-  const handleOrganizationCreated = (organization: any) => {
+  const handleOrganizationCreated = (organization: unknown) => {
     if (organization) {
       // Refresh the page to re-evaluate the organization guard
       router.refresh();

@@ -118,7 +118,7 @@ export function CreateProjectForm() {
             </div>
 
             <div className="space-y-3">
-              {environments.map((env, index) => (
+              {environments.map((env) => (
                 <div key={env.id} className="flex items-center gap-4 rounded-lg border p-4">
                   <div className="grid flex-1 grid-cols-2 gap-4">
                     <div className="space-y-2">

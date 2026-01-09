@@ -312,6 +312,7 @@ export function DataTable({ data: initialData }: { data: z.infer<typeof schema>[
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(() => data?.map(({ id }) => id) || [], [data]);
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,

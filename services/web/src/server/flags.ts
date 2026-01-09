@@ -68,7 +68,7 @@ export async function updateFlagAction(
   return flag;
 }
 
-export async function deleteFlagAction(id: string, projectId: string): Promise<void> {
+export async function deleteFlagAction(id: string): Promise<void> {
   await getSessionContext();
   const flagService = new FlagService();
   await flagService.deleteFlag(id);
@@ -143,7 +143,7 @@ export async function updateFlagConfigAction(
   return config;
 }
 
-export async function deleteFlagConfigAction(configId: string, projectId: string, flagId: string): Promise<void> {
+export async function deleteFlagConfigAction(configId: string): Promise<void> {
   await getSessionContext();
   const flagService = new FlagService();
   await flagService.deleteFlagConfig(configId);

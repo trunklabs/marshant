@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Plus, Trash2, Pencil, X, Check } from 'lucide-react';
@@ -9,7 +9,6 @@ import { Button } from '@/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/ui/dialog';
 import { Input } from '@/ui/input';
 import { Label } from '@/ui/label';
-import { Badge } from '@/ui/badge';
 import {
   listEnvironmentsAction,
   createEnvironmentAction,
@@ -37,13 +36,7 @@ export function ManageEnvironmentsDialog({ project, open, onOpenChange }: Manage
   const [newKeyManuallyEdited, setNewKeyManuallyEdited] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
 
-  useEffect(() => {
-    if (open) {
-      loadEnvironments();
-    }
-  }, [open, project.id]);
-
-  const loadEnvironments = async () => {
+  const loadEnvironments = useCallback(async () => {
     try {
       const envs = await listEnvironmentsAction(project.id);
       setEnvironments(envs);
@@ -51,7 +44,13 @@ export function ManageEnvironmentsDialog({ project, open, onOpenChange }: Manage
       toast.error('Failed to load environments');
       console.error(error);
     }
-  };
+  }, [project.id]);
+
+  useEffect(() => {
+    if (open) {
+      loadEnvironments();
+    }
+  }, [open, loadEnvironments]);
 
   const handleAdd = async () => {
     if (!newEnvName.trim() || !newEnvKey.trim()) {

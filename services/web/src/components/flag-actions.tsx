@@ -26,7 +26,6 @@ import {
 } from '@/ui/alert-dialog';
 import { Input } from '@/ui/input';
 import { Label } from '@/ui/label';
-import { Textarea } from '@/ui/textarea';
 import { updateFlagAction, deleteFlagAction } from '@/server/flags';
 
 interface FlagActionsProps {
@@ -39,7 +38,6 @@ export function FlagActions({ flag }: FlagActionsProps) {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [flagName, setFlagName] = useState(flag.name);
-  const [flagDescription, setFlagDescription] = useState('');
 
   const handleEdit = async () => {
     if (!flagName.trim()) {
@@ -141,8 +139,8 @@ export function FlagActions({ flag }: FlagActionsProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the flag "{flag.name}" and all its configurations across all environments.
-              This action cannot be undone.
+              This will permanently delete the flag &ldquo;{flag.name}&rdquo; and all its configurations across all
+              environments. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

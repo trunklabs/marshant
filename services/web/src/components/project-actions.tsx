@@ -141,8 +141,8 @@ export function ProjectActions({ project }: ProjectActionsProps) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently delete the project "{project.name}" and all its associated feature flags and
-              environments. This action cannot be undone.
+              This will permanently delete the project &ldquo;{project.name}&rdquo; and all its associated feature flags
+              and environments. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

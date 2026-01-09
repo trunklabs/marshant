@@ -8,7 +8,6 @@ import { Badge } from '@/ui/badge';
 import { Switch } from '@/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/ui/table';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
 import { updateFlagConfigAction, createFlagConfigAction } from '@/server/flags';
 import { FlagActions } from '@/components/flag-actions';
 import { GatesConfigDialog } from '@/components/gates-config-dialog';
@@ -66,7 +65,7 @@ export function FlagsTable({ flags, showProject = true }: FlagsTableProps) {
     try {
       if (!config) {
         // Config doesn't exist, create it with enabled: true
-        const newConfig = await createFlagConfigAction({
+        await createFlagConfigAction({
           flagId: flag.id,
           environmentId: environment.id,
           projectId: flag.projectId,
@@ -193,7 +192,7 @@ export function FlagsTable({ flags, showProject = true }: FlagsTableProps) {
                                   <Switch
                                     checked={isEnabled}
                                     disabled={isToggling}
-                                    onCheckedChange={(checked) => {
+                                    onCheckedChange={() => {
                                       handleToggleEnvironment(
                                         { stopPropagation: () => {} } as React.MouseEvent,
                                         flag,

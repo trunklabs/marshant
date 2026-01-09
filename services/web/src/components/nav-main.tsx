@@ -1,13 +1,9 @@
 'use client';
 
-import { IconCirclePlusFilled, IconDashboard, IconFolder, IconFlag } from '@tabler/icons-react';
+import { IconDashboard, IconFolder, IconFlag } from '@tabler/icons-react';
 import Link from 'next/link';
-import { useState } from 'react';
 
-import { Button } from '@/ui/button';
 import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/ui/sidebar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/ui/dropdown-menu';
-import { CreateProjectInline } from '@/components/create-project-inline';
 
 const iconMap = {
   dashboard: IconDashboard,
@@ -24,8 +20,6 @@ export function NavMain({
     icon?: keyof typeof iconMap;
   }[];
 }) {
-  const [createProjectOpen, setCreateProjectOpen] = useState(false);
-
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">

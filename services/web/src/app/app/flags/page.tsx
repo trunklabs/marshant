@@ -7,7 +7,6 @@ import { listEnvironmentsAction } from '@/server/environments';
 import { listFlagsAction, listFlagConfigsAction } from '@/server/flags';
 import { Button } from '@/ui/button';
 import { Card } from '@/ui/card';
-import { Badge } from '@/ui/badge';
 import { FlagsTable } from '@/components/flags-table';
 import { FlagsFilters } from '@/components/flags-filters';
 import type { Project, Environment, Flag as CoreFlag, FlagEnvironmentConfig } from '@marcurry/core';

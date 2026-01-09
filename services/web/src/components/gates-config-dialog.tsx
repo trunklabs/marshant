@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Plus, Trash2, GripVertical, Settings } from 'lucide-react';
+import { Plus, Trash2, GripVertical } from 'lucide-react';
 import type { Flag, Environment, FlagEnvironmentConfig, Gate, FlagValueType } from '@marcurry/core';
 import { validateGates, GateValidationError } from '@marcurry/core';
 import { Button } from '@/ui/button';
@@ -35,7 +35,6 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
   const router = useRouter();
   const [gates, setGates] = useState<Gate[]>(config.gates || []);
   const [loading, setLoading] = useState(false);
-  const [editingGateId, setEditingGateId] = useState<string | null>(null);
   const [isAddingGate, setIsAddingGate] = useState(false);
   const [draggedGateId, setDraggedGateId] = useState<string | null>(null);
   const [dragOverGateId, setDragOverGateId] = useState<string | null>(null);
@@ -46,18 +45,33 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
   const [newGateValue, setNewGateValue] = useState('');
   const [newGateActorIds, setNewGateActorIds] = useState('');
 
+  // Helper function to get default value based on flag type
+  const getDefaultValue = useCallback((): string => {
+    switch (flag.valueType) {
+      case 'boolean':
+        return 'true';
+      case 'string':
+        return '';
+      case 'number':
+        return '0';
+      case 'json':
+        return '{}';
+      default:
+        return '';
+    }
+  }, [flag.valueType]);
+
   // Initialize default value based on flag type
   useEffect(() => {
     if (isAddingGate && !newGateValue) {
       setNewGateValue(getDefaultValue());
     }
-  }, [isAddingGate, flag.valueType]);
+  }, [isAddingGate, newGateValue, getDefaultValue]);
 
   useEffect(() => {
     if (open) {
       setGates(config.gates || []);
       setIsAddingGate(false);
-      setEditingGateId(null);
     }
   }, [open, config.gates]);
 
@@ -72,7 +86,7 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
     }
   };
 
-  const parseValue = (valueStr: string, valueType: FlagValueType): any => {
+  const parseValue = (valueStr: string, valueType: FlagValueType): string | boolean | number | object => {
     switch (valueType) {
       case 'boolean':
         return valueStr === 'true';
@@ -143,9 +157,9 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
 
       // Reload config to update the gates list
       await reloadConfig();
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Extract error message from backend validation
-      const errorMessage = error?.message || 'Failed to add gate';
+      const errorMessage = (error as Error)?.message || 'Failed to add gate';
       toast.error(errorMessage);
       console.error(error);
     } finally {
@@ -255,9 +269,9 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
       await reorderGatesAction(config.id, flag.projectId, flag.id, gateIds);
       toast.success('Gates reordered successfully');
       await reloadConfig();
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Extract error message from backend
-      const errorMessage = error?.message || 'Failed to reorder gates';
+      const errorMessage = (error as Error)?.message || 'Failed to reorder gates';
       toast.error(errorMessage);
       console.error(error);
       // Revert on error
@@ -282,29 +296,14 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
     return String(gate.value);
   };
 
-  const getDefaultValue = (): string => {
-    switch (flag.valueType) {
-      case 'boolean':
-        return 'true';
-      case 'string':
-        return '';
-      case 'number':
-        return '0';
-      case 'json':
-        return '{}';
-      default:
-        return '';
-    }
-  };
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[80vh] max-w-3xl overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Configure Gates - {environment.name}</DialogTitle>
           <DialogDescription>
-            Manage targeting rules for "{flag.name}" in {environment.name}. Gates are evaluated in order - first match
-            wins. Boolean gates (all users) must be last and will automatically be kept at the end.
+            Manage targeting rules for &ldquo;{flag.name}&rdquo; in {environment.name}. Gates are evaluated in order -
+            first match wins. Boolean gates (all users) must be last and will automatically be kept at the end.
           </DialogDescription>
         </DialogHeader>
 

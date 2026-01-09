@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { OrganizationSwitcher, UserButton } from '@daveyplate/better-auth-ui';
 import { NavMain } from '@/components/nav-main';
 import { ModeToggle } from '@/components/mode-toggle';
@@ -27,7 +27,6 @@ const navMain = [
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter();
-  const pathname = usePathname();
 
   const handleOrganizationChange = () => {
     // I have no idea why but first refresh seems to be still hitting the cache

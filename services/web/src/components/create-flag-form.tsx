@@ -104,7 +104,7 @@ export function CreateFlagForm({ projects, preselectedProjectId }: CreateFlagFor
             parsedDefaultValue = JSON.parse(defaultValue);
             break;
         }
-      } catch (err) {
+      } catch {
         toast.error(`Invalid default value for type ${valueType}`);
         return;
       }
@@ -115,7 +115,7 @@ export function CreateFlagForm({ projects, preselectedProjectId }: CreateFlagFor
         key,
         name,
         valueType,
-        defaultValue: parsedDefaultValue as any,
+        defaultValue: parsedDefaultValue as string | boolean | number | object,
       });
 
       // Fetch all environments for the project
@@ -129,7 +129,7 @@ export function CreateFlagForm({ projects, preselectedProjectId }: CreateFlagFor
             environmentId: env.id,
             projectId,
             enabled: false, // Start disabled by default
-            defaultValue: parsedDefaultValue as any,
+            defaultValue: parsedDefaultValue as string | boolean | number | object,
             gates: [], // No gates initially
           })
         )
