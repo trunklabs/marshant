@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./docs/logo.png" alt="Marcurry Feature Flag Logo" width="400" />
+  <img src="./docs/logo.webp" alt="Marcurry Feature Flag Logo" width="200" />
 
   # Marcurry Feature Flag
 

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 type LogoProps = {
@@ -8,17 +9,18 @@ type LogoProps = {
 };
 
 export function Logo({ size = 'default', asLink = true, path = '/' }: LogoProps) {
+  const imageSize = size === 'sm' ? 28 : 36;
+
   const content = (
     <>
-      {/* Logo placeholder */}
-      <div
-        className={cn(
-          'bg-primary text-primary-foreground flex items-center justify-center font-bold',
-          size === 'sm' ? 'size-6 rounded text-xs' : 'size-8 rounded-lg text-sm'
-        )}
-      >
-        M
-      </div>
+      <Image
+        src="/logo.webp"
+        alt="Marcurry Logo"
+        width={imageSize}
+        height={imageSize}
+        className={cn('object-contain', size === 'sm' ? 'h-7 w-7' : 'h-9 w-9')}
+        priority
+      />
       <span className={cn('font-semibold', size === 'sm' ? 'text-base' : 'text-xl')}>Marcurry</span>
     </>
   );

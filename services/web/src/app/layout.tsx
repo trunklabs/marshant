@@ -20,6 +20,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Marcurry - Feature Flag Management',
   description: 'Feature Flag Management Solution',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '16x16 32x32 48x48' },
+      { url: '/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
+  manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({
