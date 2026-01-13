@@ -1,6 +1,6 @@
-# Contributing to Marcurry Feature Flag
+# Contributing to Marshant Feature Flag
 
-Thank you for your interest in contributing to Marcurry Feature Flag! This guide will help you get started with the development environment.
+Thank you for your interest in contributing to Marshant Feature Flag! This guide will help you get started with the development environment.
 
 ## Prerequisites
 
@@ -50,7 +50,7 @@ The application will be available at `http://localhost:3005`.
 Build the image from the project root:
 
 ```shell
-docker build -t marcurry-web --target web .
+docker build -t marshant-web --target web .
 ```
 
 ### Run the Container
@@ -58,7 +58,7 @@ docker build -t marcurry-web --target web .
 Run the Docker container:
 
 ```shell
-docker run --rm -p 3005:3005 -e PORT=3005 --name marcurry-web marcurry-web
+docker run --rm -p 3005:3005 -e PORT=3005 --name marshant-web marshant-web
 ```
 
 The application will be available at `http://localhost:3005`.

@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/ui/card';
 import { Switch } from '@/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
 import { X, Plus, ChevronUp, ChevronDown } from 'lucide-react';
-import type { Gate, FlagValueType, FlagValueTypeMap } from '@marcurry/core';
+import type { Gate, FlagValueType, FlagValueTypeMap } from '@marshant/core';
 
 interface GatesEditorProps {
   initialGates: Gate[];

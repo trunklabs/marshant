@@ -11,7 +11,7 @@ import type {
   Gate,
   Actor,
   EvaluationResult,
-} from '@marcurry/core';
+} from '@marshant/core';
 
 // ============================================================================
 // Flag CRUD

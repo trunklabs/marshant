@@ -6,7 +6,7 @@ import {
   FlagEnvironmentConfigNotFoundError,
   FlagValidationError,
   GateValidationError,
-} from '@marcurry/core';
+} from '@marshant/core';
 
 const mockFlagRepo = {
   findById: vi.fn(),

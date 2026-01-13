@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Button } from '@/ui/button';
 import { Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import type { Project } from '@marcurry/core';
+import type { Project } from '@marshant/core';
 import { deleteProjectAction } from '@/server/projects';
 
 export interface ProductRow {

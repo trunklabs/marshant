@@ -23,7 +23,7 @@ export function ClientProviders({ children }: { children: ReactNode }) {
         apiKey: true,
       }}
       apiKey={{
-        prefix: 'marcurry_pk_',
+        prefix: 'marshant_pk_',
       }}
     >
       {children}

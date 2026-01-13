@@ -1,6 +1,6 @@
 import { eq, and } from 'drizzle-orm';
 import { db, flags, type FlagRow } from '@/db';
-import type { Flag, FlagId, ProjectId, FlagValueType, FlagValueTypeMap } from '@marcurry/core';
+import type { Flag, FlagId, ProjectId, FlagValueType, FlagValueTypeMap } from '@marshant/core';
 
 export class FlagRepository {
   async findById(id: FlagId): Promise<Flag | null> {

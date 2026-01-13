@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Marcurry - Feature Flag Management',
+  title: 'Marshant - Feature Flag Management',
   description: 'Feature Flag Management Solution',
   icons: {
     icon: [

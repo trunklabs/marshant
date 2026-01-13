@@ -4,7 +4,7 @@ import {
   ProjectNotFoundError,
   CannotDeleteLastEnvironmentError,
   EnvironmentValidationError,
-} from '@marcurry/core';
+} from '@marshant/core';
 
 const mockEnvironmentRepo = {
   findById: vi.fn(),

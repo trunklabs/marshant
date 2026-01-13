@@ -63,7 +63,7 @@ jobs:
           PACKAGE_VERSION="${{ matrix.package.version }}"
 
           # Remove scope from package name for path resolution
-          PACKAGE_SHORT_NAME=${PACKAGE_NAME#@marcurry/}
+          PACKAGE_SHORT_NAME=${PACKAGE_NAME#@marshant/}
 
           # Find the package.json location
           PACKAGE_JSON_PATH=""

@@ -1,5 +1,5 @@
 ---
-'@marcurry/web': patch
+'@marshant/web': patch
 ---
 
 New Light & Dark Theme Toggle

@@ -13,7 +13,7 @@ import { createFlagAction, createFlagConfigAction } from '@/server/flags';
 import { listEnvironmentsAction } from '@/server/environments';
 import { toast } from 'sonner';
 import { slugify, parseErrorMessage } from '@/lib/utils';
-import type { Project, FlagValueType, FlagValueTypeMap } from '@marcurry/core';
+import type { Project, FlagValueType, FlagValueTypeMap } from '@marshant/core';
 import { createFlagSchema, type CreateFlagInput } from '@/schemas/flag-schemas';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/ui/form';
 

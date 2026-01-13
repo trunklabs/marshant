@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
-import type { Project } from '@marcurry/core';
+import type { Project } from '@marshant/core';
 
 interface FlagsFiltersProps {
   projects: Project[];

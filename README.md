@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="./docs/logo.webp" alt="Marcurry Feature Flag Logo" width="200" />
+  <img src="./docs/logo.webp" alt="Marshant Feature Flag Logo" width="200" />
 
-  # Marcurry Feature Flag
+  # Marshant Feature Flag
 
   **A powerful, self-hosted feature flag management system**
 
@@ -12,7 +12,7 @@
 
 ## 🚀 Overview
 
-Marcurry Feature Flag is a modern, self-hosted feature flag management system designed to give you full control over feature rollouts, A/B testing, and progressive delivery. Built with TypeScript and Next.js, it provides a clean and intuitive interface for managing feature flags across your applications.
+Marshant Feature Flag is a modern, self-hosted feature flag management system designed to give you full control over feature rollouts, A/B testing, and progressive delivery. Built with TypeScript and Next.js, it provides a clean and intuitive interface for managing feature flags across your applications.
 
 ## ✨ Features
 
@@ -48,5 +48,5 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 ---
 
 <div align="center">
-  Made with ❤️ by the Marcurry team
+  Made with ❤️ by the Marshant team
 </div>

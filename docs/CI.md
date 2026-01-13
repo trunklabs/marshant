@@ -43,7 +43,7 @@ A package that wants all checks:
 
 ```json
 {
-  "name": "@marcurry/web",
+  "name": "@marshant/web",
   "scripts": {
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
@@ -61,7 +61,7 @@ A package that only needs type checking and building:
 
 ```json
 {
-  "name": "@marcurry/sdk",
+  "name": "@marshant/sdk",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "build": "tsup"
@@ -77,7 +77,7 @@ A package with no checks (e.g., documentation-only):
 
 ```json
 {
-  "name": "@marcurry/docs",
+  "name": "@marshant/docs",
   "scripts": {
     "dev": "vitepress dev"
   }
@@ -134,8 +134,8 @@ pnpm exec turbo test --filter='...[origin/main]'
 pnpm exec turbo build --filter='...[origin/main]'
 
 # Run checks on a specific package
-pnpm exec turbo lint --filter=@marcurry/web
-pnpm exec turbo build --filter=@marcurry/sdk
+pnpm exec turbo lint --filter=@marshant/web
+pnpm exec turbo build --filter=@marshant/sdk
 ```
 
 ### 4. Adding New Checks

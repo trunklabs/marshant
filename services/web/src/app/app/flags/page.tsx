@@ -9,7 +9,7 @@ import { Button } from '@/ui/button';
 import { Card } from '@/ui/card';
 import { FlagsTable } from '@/components/flags-table';
 import { FlagsFilters } from '@/components/flags-filters';
-import type { Project, Environment, Flag as CoreFlag, FlagEnvironmentConfig } from '@marcurry/core';
+import type { Project, Environment, Flag as CoreFlag, FlagEnvironmentConfig } from '@marshant/core';
 
 export default async function FeatureFlagsPage({ searchParams }: { searchParams: Promise<{ project?: string }> }) {
   const session = await auth.api.getSession({ headers: await headers() });

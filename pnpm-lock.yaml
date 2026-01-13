@@ -47,7 +47,7 @@ importers:
 
   packages/sdk:
     dependencies:
-      '@marcurry/core':
+      '@marshant/core':
         specifier: workspace:*
         version: link:../../domains/core
     devDependencies:
@@ -81,7 +81,7 @@ importers:
       '@hookform/resolvers':
         specifier: 5.2.2
         version: 5.2.2(react-hook-form@7.71.0(react@19.2.3))
-      '@marcurry/core':
+      '@marshant/core':
         specifier: workspace:*
         version: link:../../domains/core
       '@radix-ui/react-alert-dialog':

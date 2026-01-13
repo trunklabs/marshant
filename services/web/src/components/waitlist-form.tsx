@@ -31,7 +31,7 @@ export function WaitlistForm() {
   }
 
   if (submitted) {
-    return <p className="text-muted-foreground text-sm">Thanks! We&apos;ll notify you when Marcurry Cloud launches.</p>;
+    return <p className="text-muted-foreground text-sm">Thanks! We&apos;ll notify you when Marshant Cloud launches.</p>;
   }
 
   return (

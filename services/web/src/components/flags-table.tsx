@@ -13,7 +13,7 @@ import { FlagActions } from '@/components/flag-actions';
 import { GatesConfigDialog } from '@/components/gates-config-dialog';
 import { KeyDisplay } from '@/components/key-display';
 import { parseErrorMessage } from '@/lib/utils';
-import type { Flag, Environment, FlagEnvironmentConfig, Project } from '@marcurry/core';
+import type { Flag, Environment, FlagEnvironmentConfig, Project } from '@marshant/core';
 
 interface FlagWithProject extends Flag {
   project: Project;

@@ -1,6 +1,6 @@
 import { eq, desc, and, isNull } from 'drizzle-orm';
 import { db, projects, projectOwners, type ProjectRow, type Transaction } from '@/db';
-import type { Project, ProjectId } from '@marcurry/core';
+import type { Project, ProjectId } from '@marshant/core';
 
 type ProjectWithKey = ProjectRow & { key: string };
 
