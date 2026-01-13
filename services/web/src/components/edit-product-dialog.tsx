@@ -25,7 +25,7 @@ import {
   listEnvironmentsAction,
 } from '@/server/environments';
 import { slugify, parseErrorMessage } from '@/lib/utils';
-import type { Project, Environment } from '@marcurry/core';
+import type { Project, Environment } from '@marshant/core';
 import { updateProjectSchema, type UpdateProjectInput } from '@/schemas/project-schemas';
 import {
   createEnvironmentSchema,

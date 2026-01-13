@@ -40,7 +40,7 @@ export default async function LandingPage() {
               SDKs
             </Link>
             <Link
-              href="https://github.com/trunklabs/marcurry"
+              href="https://github.com/trunklabs/marshant"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-foreground text-sm transition-colors"
@@ -99,7 +99,7 @@ export default async function LandingPage() {
               </Button>
             )}
             <Button size="lg" variant="outline" asChild>
-              <Link href="https://github.com/trunklabs/marcurry" target="_blank" rel="noopener noreferrer">
+              <Link href="https://github.com/trunklabs/marshant" target="_blank" rel="noopener noreferrer">
                 <Github className="mr-2 size-4" />
                 Star on GitHub
               </Link>
@@ -158,7 +158,7 @@ export default async function LandingPage() {
             <div className="mb-16 text-center">
               <h2 className="mb-4 text-3xl font-bold md:text-4xl">SDKs for your stack</h2>
               <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
-                Integrate Marcurry into your application with our official SDKs.
+                Integrate Marshant into your application with our official SDKs.
               </p>
             </div>
 
@@ -183,18 +183,18 @@ export default async function LandingPage() {
                 </div>
                 <h2 className="mb-4 text-2xl font-bold md:text-3xl">Open Source & Free Forever</h2>
                 <p className="text-muted-foreground mx-auto mb-8 max-w-xl">
-                  Marcurry is fully open source under the MIT license. Self-host for free with no feature limitations or
+                  Marshant is fully open source under the MIT license. Self-host for free with no feature limitations or
                   hidden paywalls.
                 </p>
                 <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
                   <Button size="lg" variant="outline" asChild>
-                    <Link href="https://github.com/trunklabs/marcurry" target="_blank" rel="noopener noreferrer">
+                    <Link href="https://github.com/trunklabs/marshant" target="_blank" rel="noopener noreferrer">
                       <Star className="mr-2 size-4" />
                       Star on GitHub
                     </Link>
                   </Button>
                   <Button size="lg" variant="ghost" asChild>
-                    <Link href="https://github.com/trunklabs/marcurry" target="_blank" rel="noopener noreferrer">
+                    <Link href="https://github.com/trunklabs/marshant" target="_blank" rel="noopener noreferrer">
                       View Source
                       <ArrowRight className="ml-2 size-4" />
                     </Link>
@@ -211,7 +211,7 @@ export default async function LandingPage() {
             <Badge variant="outline" className="mb-6">
               Coming Soon
             </Badge>
-            <h2 className="mb-4 text-2xl font-bold md:text-3xl">Marcurry Cloud</h2>
+            <h2 className="mb-4 text-2xl font-bold md:text-3xl">Marshant Cloud</h2>
             <p className="text-muted-foreground mx-auto max-w-xl">
               Don&apos;t want to self-host? We&apos;re building a managed cloud version. Join the waitlist to be
               notified when it launches.
@@ -229,7 +229,7 @@ export default async function LandingPage() {
 
             <nav className="flex flex-wrap items-center justify-center gap-6">
               <Link
-                href="https://github.com/trunklabs/marcurry"
+                href="https://github.com/trunklabs/marshant"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground text-sm transition-colors"
@@ -244,7 +244,7 @@ export default async function LandingPage() {
               </Link>
             </nav>
 
-            <p className="text-muted-foreground text-sm">© {new Date().getFullYear()} Marcurry. All right reserved.</p>
+            <p className="text-muted-foreground text-sm">© {new Date().getFullYear()} Marshant. All right reserved.</p>
           </div>
         </div>
       </footer>

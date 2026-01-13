@@ -18,7 +18,7 @@ import { Plus, X, Sparkles } from 'lucide-react';
 import { useToast } from '@/ui/toast';
 import { useRouter } from 'next/navigation';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
-import type { Project, FlagValueType, FlagValueTypeMap } from '@marcurry/core';
+import type { Project, FlagValueType, FlagValueTypeMap } from '@marshant/core';
 import { createFlagAction } from '@/server/flags';
 import { slugify, parseErrorMessage } from '@/lib/utils';
 import { createFlagSchema, type CreateFlagInput } from '@/schemas/flag-schemas';

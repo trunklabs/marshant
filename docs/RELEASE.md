@@ -34,7 +34,7 @@ To make a package buildable as a Docker image:
 
 ```json
 {
-  "name": "@marcurry/my-service",
+  "name": "@marshant/my-service",
   "version": "0.1.0",
   "private": true,
   "dockerTarget": "my-service",
@@ -52,8 +52,8 @@ FROM base AS build-my-service
 COPY . /usr/src/app
 WORKDIR /usr/src/app
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install -w -F @marcurry/my-service... --frozen-lockfile && \
-    pnpm exec turbo @marcurry/my-service#build
+    pnpm install -w -F @marshant/my-service... --frozen-lockfile && \
+    pnpm exec turbo @marshant/my-service#build
 
 # Runtime stage for your service
 FROM node:22.19-alpine3.22 AS my-service
@@ -89,12 +89,12 @@ Each image receives multiple tags:
 
 ### Example
 
-For `@marcurry/web` version `1.2.3`:
+For `@marshant/web` version `1.2.3`:
 
-- `ghcr.io/mark-omarov/marcurry-feature-flag/web:1.2.3`
-- `ghcr.io/mark-omarov/marcurry-feature-flag/web:1.2`
-- `ghcr.io/mark-omarov/marcurry-feature-flag/web:1`
-- `ghcr.io/mark-omarov/marcurry-feature-flag/web:latest`
+- `ghcr.io/mark-omarov/marshant-feature-flag/web:1.2.3`
+- `ghcr.io/mark-omarov/marshant-feature-flag/web:1.2`
+- `ghcr.io/mark-omarov/marshant-feature-flag/web:1`
+- `ghcr.io/mark-omarov/marshant-feature-flag/web:latest`
 
 ## Private Packages
 

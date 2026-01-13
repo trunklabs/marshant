@@ -1,5 +1,5 @@
 {
-  "name": "@marcurry/sdk",
+  "name": "@marshant/sdk",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -17,7 +17,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@marcurry/core": "workspace:*"
+    "@marshant/core": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "20.19.25",

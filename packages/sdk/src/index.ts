@@ -1,4 +1,4 @@
-import type { Actor, EvaluationResult } from '@marcurry/core';
+import type { Actor, EvaluationResult } from '@marshant/core';
 
 export type ClientOptions = {
   apiKey: string;
@@ -8,7 +8,7 @@ export type ClientOptions = {
 };
 
 /**
- * The Marcurry SDK client interface.
+ * The Marshant SDK client interface.
  */
 export type Client = {
   /**
@@ -55,14 +55,14 @@ export class EvaluationError extends Error {
 const DEFAULT_BASE_URL = 'http://localhost:3000';
 
 /**
- * Creates a new Marcurry SDK client.
+ * Creates a new Marshant SDK client.
  *
  * @example
  * ```ts
- * import { createClient } from '@marcurry/sdk';
+ * import { createClient } from '@marshant/sdk';
  *
  * const client = createClient({
- *   apiKey: 'marcurry_pk_xxx',
+ *   apiKey: 'marshant_pk_xxx',
  *   projectKey: 'my-project',
  *   environmentKey: 'production',
  *   baseUrl: 'https://your-app.example.com',
@@ -152,4 +152,4 @@ export function createClient(options: ClientOptions): Client {
   };
 }
 
-export type { Actor, EvaluationResult } from '@marcurry/core';
+export type { Actor, EvaluationResult } from '@marshant/core';

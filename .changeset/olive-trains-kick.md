@@ -1,5 +1,5 @@
 ---
-'@marcurry/web': patch
+'@marshant/web': patch
 ---
 
 Improve UI elements theme consistency

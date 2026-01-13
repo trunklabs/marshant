@@ -3,7 +3,7 @@ import path from 'path';
 
 export default defineProject({
   test: {
-    name: '@marcurry/web',
+    name: '@marshant/web',
     environment: 'node',
     include: ['src/**/*.test.ts'],
   },

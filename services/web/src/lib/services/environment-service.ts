@@ -5,8 +5,8 @@ import {
   ProjectNotFoundError,
   CannotDeleteLastEnvironmentError,
   validateEnvironment,
-} from '@marcurry/core';
-import type { Environment, EnvironmentId, ProjectId } from '@marcurry/core';
+} from '@marshant/core';
+import type { Environment, EnvironmentId, ProjectId } from '@marshant/core';
 
 export class EnvironmentService {
   private environmentRepo: EnvironmentRepository;

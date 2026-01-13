@@ -1,5 +1,5 @@
 ---
-'@marcurry/web': minor
+'@marshant/web': minor
 ---
 
 Feature flag evaluation API & key management

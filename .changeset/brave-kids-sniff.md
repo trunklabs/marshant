@@ -1,5 +1,5 @@
 ---
-'@marcurry/core': minor
+'@marshant/core': minor
 ---
 
 Environment validation is here

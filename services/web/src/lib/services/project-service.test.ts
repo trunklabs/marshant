@@ -4,7 +4,7 @@ import {
   ProjectMustHaveEnvironmentError,
   ProjectValidationError,
   EnvironmentValidationError,
-} from '@marcurry/core';
+} from '@marshant/core';
 
 const mockProjectRepo = {
   findById: vi.fn(),

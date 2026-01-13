@@ -3,7 +3,7 @@
 import { EnvironmentService } from '@/lib/services/environment-service';
 import { revalidatePath } from 'next/cache';
 import { getSessionContext } from '@/server/auth-context';
-import type { Environment } from '@marcurry/core';
+import type { Environment } from '@marshant/core';
 import { createEnvironmentSchema, updateEnvironmentSchema } from '@/schemas/environment-schemas';
 
 export async function listEnvironmentsAction(projectId: string): Promise<Environment[]> {

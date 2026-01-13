@@ -7,8 +7,8 @@ import {
   ProjectMustHaveEnvironmentError,
   validateProject,
   validateEnvironment,
-} from '@marcurry/core';
-import type { Project, ProjectId } from '@marcurry/core';
+} from '@marshant/core';
+import type { Project, ProjectId } from '@marshant/core';
 
 export class ProjectAccessDeniedError extends Error {
   constructor(projectId: string, ownerId: string, ownerType: 'organization' | 'user') {

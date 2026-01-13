@@ -1,7 +1,7 @@
 ---
-'@marcurry/sdk': minor
-'@marcurry/core': minor
-'@marcurry/web': minor
+'@marshant/sdk': minor
+'@marshant/core': minor
+'@marshant/web': minor
 ---
 
 Organization-scoped API keys
@@ -14,7 +14,7 @@ The SDK client requires `apiKey`, `projectKey`, and `environmentKey` parameters:
 
 ```ts
 const client = createClient({
-  apiKey: 'marcurry_pk_xxx',
+  apiKey: 'marshant_pk_xxx',
   projectKey: 'my-project',
   environmentKey: 'production',
 });

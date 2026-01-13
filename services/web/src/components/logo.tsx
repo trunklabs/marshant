@@ -15,13 +15,13 @@ export function Logo({ size = 'default', asLink = true, path = '/' }: LogoProps)
     <>
       <Image
         src="/logo.webp"
-        alt="Marcurry Logo"
+        alt="Marshant Logo"
         width={imageSize}
         height={imageSize}
         className={cn('object-contain', size === 'sm' ? 'h-7 w-7' : 'h-9 w-9')}
         priority
       />
-      <span className={cn('font-semibold', size === 'sm' ? 'text-base' : 'text-xl')}>Marcurry</span>
+      <span className={cn('font-semibold', size === 'sm' ? 'text-base' : 'text-xl')}>Marshant</span>
     </>
   );
 

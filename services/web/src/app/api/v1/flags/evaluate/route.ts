@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { FlagService } from '@/lib/services/flag-service';
 import { ProjectRepository } from '@/lib/repositories/project-repository';
 import { auth } from '@/lib/auth';
-import type { Actor, EvaluationResult } from '@marcurry/core';
+import type { Actor, EvaluationResult } from '@marshant/core';
 
 export type EvaluateFlagRequest = {
   projectKey: string;

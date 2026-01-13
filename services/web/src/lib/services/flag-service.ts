@@ -10,7 +10,7 @@ import {
   ProjectNotFoundError,
   EnvironmentNotFoundError,
   FlagEnvironmentConfigNotFoundError,
-} from '@marcurry/core';
+} from '@marshant/core';
 import type {
   Flag,
   FlagId,
@@ -22,7 +22,7 @@ import type {
   Gate,
   Actor,
   EvaluationResult,
-} from '@marcurry/core';
+} from '@marshant/core';
 
 export class FlagService {
   private flagRepo: FlagRepository;

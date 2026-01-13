@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { createClient, EvaluationError } from './index.js';
-import type { EvaluationResult } from '@marcurry/core';
+import type { EvaluationResult } from '@marshant/core';
 
 describe('createClient', () => {
   describe('validation', () => {

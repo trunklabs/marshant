@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { MoreVertical, Pencil, Trash2, Settings, Layers } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import type { Project } from '@marcurry/core';
+import type { Project } from '@marshant/core';
 import { Button } from '@/ui/button';
 import {
   DropdownMenu,

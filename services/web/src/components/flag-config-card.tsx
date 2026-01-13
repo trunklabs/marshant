@@ -9,7 +9,7 @@ import { Label } from '@/ui/label';
 import { createFlagConfigAction, updateFlagConfigAction } from '@/server/flags';
 import { toast } from 'sonner';
 import { parseErrorMessage } from '@/lib/utils';
-import type { Flag, Environment, FlagEnvironmentConfig } from '@marcurry/core';
+import type { Flag, Environment, FlagEnvironmentConfig } from '@marshant/core';
 
 interface FlagConfigCardProps {
   flag: Flag;

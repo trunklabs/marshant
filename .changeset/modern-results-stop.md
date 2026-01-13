@@ -1,5 +1,5 @@
 ---
-'@marcurry/web': patch
+'@marshant/web': patch
 ---
 
 Streamline project and environment forms

@@ -1,6 +1,6 @@
 import { eq, and } from 'drizzle-orm';
 import { db, environments, type EnvironmentRow, type Transaction } from '@/db';
-import type { Environment, EnvironmentId, ProjectId } from '@marcurry/core';
+import type { Environment, EnvironmentId, ProjectId } from '@marshant/core';
 
 export class EnvironmentRepository {
   async findById(id: EnvironmentId): Promise<Environment | null> {

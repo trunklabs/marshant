@@ -7,7 +7,7 @@ import { listEnvironmentsAction } from '@/server/environments';
 import { listFlagsAction } from '@/server/flags';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/card';
 import { Button } from '@/ui/button';
-import type { Project, Environment } from '@marcurry/core';
+import type { Project, Environment } from '@marshant/core';
 
 export default async function DashboardPage() {
   const session = await auth.api.getSession({ headers: await headers() });

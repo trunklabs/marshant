@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from '@/ui/badge';
 import { ProjectActions } from '@/components/project-actions';
 import { KeyDisplay } from '@/components/key-display';
-import type { Project, Environment } from '@marcurry/core';
+import type { Project, Environment } from '@marshant/core';
 
 export default async function ProjectsPage() {
   const session = await auth.api.getSession({ headers: await headers() });

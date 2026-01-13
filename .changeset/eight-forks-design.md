@@ -1,5 +1,5 @@
 ---
-'@marcurry/sdk': minor
+'@marshant/sdk': minor
 ---
 
 Feature flag SDK for JavaScript/TypeScript
@@ -12,7 +12,7 @@ Evaluate feature flags in your application with a simple, type-safe client:
 - **`evaluateFlag()`** - Get the full evaluation result with reason
 
 ```ts
-import { createClient } from '@marcurry/sdk';
+import { createClient } from '@marshant/sdk';
 
 const client = createClient({
   apiKey: 'mc_your-api-key',

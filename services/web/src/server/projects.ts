@@ -3,8 +3,8 @@
 import { ProjectService } from '@/lib/services/project-service';
 import { revalidatePath } from 'next/cache';
 import { getSessionContext } from '@/server/auth-context';
-import type { Project } from '@marcurry/core';
-import { ProjectNotFoundError } from '@marcurry/core';
+import type { Project } from '@marshant/core';
+import { ProjectNotFoundError } from '@marshant/core';
 import { createProjectSchema, updateProjectSchema } from '@/schemas/project-schemas';
 
 export async function listProjectsAction(): Promise<Project[]> {

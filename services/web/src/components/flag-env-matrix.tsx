@@ -9,7 +9,7 @@ import { Switch } from '@/ui/switch';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/ui/dialog';
 import { GatesEditor } from '@/components/gates-editor';
 import { createFlagConfigAction, updateFlagConfigAction } from '@/server/flags';
-import type { Environment, Flag, FlagEnvironmentConfig, Gate, FlagValueType, FlagValueTypeMap } from '@marcurry/core';
+import type { Environment, Flag, FlagEnvironmentConfig, Gate, FlagValueType, FlagValueTypeMap } from '@marshant/core';
 
 type Props = {
   flag: Flag;

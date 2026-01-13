@@ -9,7 +9,7 @@ import type {
   FlagValueType,
   FlagValueTypeMap,
   Gate,
-} from '@marcurry/core';
+} from '@marshant/core';
 
 export class FlagConfigRepository {
   async findById(id: FlagEnvironmentConfigId): Promise<FlagEnvironmentConfig | null> {

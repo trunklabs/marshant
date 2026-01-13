@@ -1,6 +1,6 @@
 ---
-'@marcurry/core': minor
-'@marcurry/web': minor
+'@marshant/core': minor
+'@marshant/web': minor
 ---
 
 Project and environment validation
