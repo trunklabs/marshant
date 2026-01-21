@@ -1,20 +1,25 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Plus, Trash2, GripVertical } from 'lucide-react';
+import { Plus, Trash2, GripVertical, Pencil, X, Check } from 'lucide-react';
 import type { Flag, Environment, FlagEnvironmentConfig, Gate, FlagValueType } from '@marshant/core';
 import { validateGates, GateValidationError } from '@marshant/core';
 import { Button } from '@/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/ui/dialog';
 import { Input } from '@/ui/input';
-import { Label } from '@/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
 import { Switch } from '@/ui/switch';
 import { Textarea } from '@/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
 import { Badge } from '@/ui/badge';
+import { Label } from '@/ui/label';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/ui/form';
+import { parseErrorMessage } from '@/lib/utils';
+import { createGateSchema, updateGateSchema, type CreateGateInput, type UpdateGateInput } from '@/schemas/gate-schemas';
 import {
   addGateAction,
   updateGateAction,
@@ -36,14 +41,9 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
   const [gates, setGates] = useState<Gate[]>(config.gates || []);
   const [loading, setLoading] = useState(false);
   const [isAddingGate, setIsAddingGate] = useState(false);
+  const [editingGateId, setEditingGateId] = useState<string | null>(null);
   const [draggedGateId, setDraggedGateId] = useState<string | null>(null);
   const [dragOverGateId, setDragOverGateId] = useState<string | null>(null);
-
-  // New gate form state
-  const [newGateType, setNewGateType] = useState<'boolean' | 'actors'>('boolean');
-  const [newGateEnabled, setNewGateEnabled] = useState(true);
-  const [newGateValue, setNewGateValue] = useState('');
-  const [newGateActorIds, setNewGateActorIds] = useState('');
 
   // Helper function to get default value based on flag type
   const getDefaultValue = useCallback((): string => {
@@ -61,22 +61,34 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
     }
   }, [flag.valueType]);
 
-  // Initialize default value based on flag type
-  useEffect(() => {
-    if (isAddingGate && !newGateValue) {
-      setNewGateValue(getDefaultValue());
-    }
-  }, [isAddingGate, newGateValue, getDefaultValue]);
+  // Add gate form
+  const addForm = useForm<CreateGateInput>({
+    resolver: zodResolver(createGateSchema),
+    mode: 'onTouched',
+    defaultValues: {
+      type: 'boolean',
+      enabled: true,
+      value: getDefaultValue(),
+    },
+  });
+
+  const addGateType = addForm.watch('type');
 
   useEffect(() => {
     if (open) {
       setGates(config.gates || []);
       setIsAddingGate(false);
+      setEditingGateId(null);
+      addForm.reset({
+        type: 'boolean',
+        enabled: true,
+        value: getDefaultValue(),
+      });
     }
-  }, [open, config.gates]);
+  }, [open, config.gates, addForm, getDefaultValue]);
 
   // Reload config from server after mutations
-  const reloadConfig = async () => {
+  const reloadConfig = useCallback(async () => {
     try {
       const updatedConfig = await getFlagConfigAction(flag.id, environment.id);
       setGates(updatedConfig.gates || []);
@@ -84,7 +96,7 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
     } catch (error) {
       console.error('Failed to reload config:', error);
     }
-  };
+  }, [flag.id, environment.id, router]);
 
   const parseValue = (valueStr: string, valueType: FlagValueType): string | boolean | number | object => {
     switch (valueType) {
@@ -103,44 +115,32 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
     }
   };
 
-  const handleAddGate = async () => {
-    if (!newGateValue.trim()) {
-      toast.error('Value is required');
-      return;
-    }
-
-    if (newGateType === 'actors' && !newGateActorIds.trim()) {
-      toast.error('Targeting specific actors are required for actors gate');
-      return;
-    }
-
+  async function onAddGate(data: CreateGateInput) {
     setLoading(true);
     try {
-      const parsedValue = parseValue(newGateValue, flag.valueType);
+      const parsedValue = parseValue(data.value, flag.valueType);
 
       const newGate =
-        newGateType === 'boolean'
+        data.type === 'boolean'
           ? {
               type: 'boolean' as const,
-              enabled: newGateEnabled,
+              enabled: data.enabled,
               value: parsedValue,
             }
           : {
               type: 'actors' as const,
-              enabled: newGateEnabled,
-              actorIds: newGateActorIds
+              enabled: data.enabled,
+              actorIds: data.actorIds
                 .split(',')
                 .map((id) => id.trim())
                 .filter(Boolean),
               value: parsedValue,
             };
 
-      // The backend handles smart insertion - non-boolean gates are automatically
-      // inserted before any existing boolean gate
       await addGateAction(config.id, flag.projectId, flag.id, newGate as Omit<Gate, 'id'>);
 
       const hasBooleanGateAtEnd = gates.length > 0 && gates[gates.length - 1].type === 'boolean';
-      const isAddingBooleanGate = newGateType === 'boolean';
+      const isAddingBooleanGate = data.type === 'boolean';
 
       if (!isAddingBooleanGate && hasBooleanGateAtEnd) {
         toast.success('Gate added before boolean gate');
@@ -148,24 +148,20 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
         toast.success('Gate added successfully');
       }
 
-      // Reset form
-      setNewGateType('boolean');
-      setNewGateEnabled(true);
-      setNewGateValue('');
-      setNewGateActorIds('');
+      addForm.reset({
+        type: 'boolean',
+        enabled: true,
+        value: getDefaultValue(),
+      });
       setIsAddingGate(false);
-
-      // Reload config to update the gates list
       await reloadConfig();
-    } catch (error: unknown) {
-      // Extract error message from backend validation
-      const errorMessage = (error as Error)?.message || 'Failed to add gate';
-      toast.error(errorMessage);
+    } catch (error) {
+      toast.error(parseErrorMessage(error, 'Failed to add gate'));
       console.error(error);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   const handleDeleteGate = async (gateId: string) => {
     if (!confirm('Are you sure you want to delete this gate?')) {
@@ -176,10 +172,9 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
     try {
       await deleteGateAction(config.id, flag.projectId, flag.id, gateId);
       toast.success('Gate deleted successfully');
-      // Reload config to update the gates list
       await reloadConfig();
     } catch (error) {
-      toast.error('Failed to delete gate');
+      toast.error(parseErrorMessage(error, 'Failed to delete gate'));
       console.error(error);
     } finally {
       setLoading(false);
@@ -193,10 +188,9 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
         enabled: !gate.enabled,
       });
       toast.success(`Gate ${!gate.enabled ? 'enabled' : 'disabled'}`);
-      // Reload config to update the gates list
       await reloadConfig();
     } catch (error) {
-      toast.error('Failed to update gate');
+      toast.error(parseErrorMessage(error, 'Failed to update gate'));
       console.error(error);
     } finally {
       setLoading(false);
@@ -205,11 +199,13 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
 
   // Drag and drop handlers
   const handleDragStart = (e: React.DragEvent, gateId: string) => {
+    if (editingGateId) return; // Disable drag while editing
     setDraggedGateId(gateId);
     e.dataTransfer.effectAllowed = 'move';
   };
 
   const handleDragOver = (e: React.DragEvent, gateId: string) => {
+    if (editingGateId) return;
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
     setDragOverGateId(gateId);
@@ -222,7 +218,7 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
   const handleDrop = async (e: React.DragEvent, targetGateId: string) => {
     e.preventDefault();
 
-    if (!draggedGateId || draggedGateId === targetGateId) {
+    if (editingGateId || !draggedGateId || draggedGateId === targetGateId) {
       setDraggedGateId(null);
       setDragOverGateId(null);
       return;
@@ -237,16 +233,13 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
       return;
     }
 
-    // Reorder gates array
     const newGates = [...gates];
     const [draggedGate] = newGates.splice(draggedIndex, 1);
     newGates.splice(targetIndex, 0, draggedGate);
 
-    // Validate the new order before sending to server
     try {
       validateGates(newGates);
     } catch (error) {
-      // Validation failed - show error and don't proceed
       setDraggedGateId(null);
       setDragOverGateId(null);
       if (error instanceof GateValidationError) {
@@ -257,24 +250,19 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
       return;
     }
 
-    // Optimistically update UI
     setGates(newGates);
     setDraggedGateId(null);
     setDragOverGateId(null);
 
-    // Persist to server
     setLoading(true);
     try {
       const gateIds = newGates.map((g) => g.id);
       await reorderGatesAction(config.id, flag.projectId, flag.id, gateIds);
       toast.success('Gates reordered successfully');
       await reloadConfig();
-    } catch (error: unknown) {
-      // Extract error message from backend
-      const errorMessage = (error as Error)?.message || 'Failed to reorder gates';
-      toast.error(errorMessage);
+    } catch (error) {
+      toast.error(parseErrorMessage(error, 'Failed to reorder gates'));
       console.error(error);
-      // Revert on error
       setGates(gates);
     } finally {
       setLoading(false);
@@ -294,6 +282,44 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
       return JSON.stringify(gate.value);
     }
     return String(gate.value);
+  };
+
+  const renderValueInput = (fieldValue: string, onChange: (value: string) => void, disabled: boolean) => {
+    switch (flag.valueType) {
+      case 'boolean':
+        return (
+          <Select value={fieldValue || 'true'} onValueChange={onChange} disabled={disabled}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="true">true</SelectItem>
+              <SelectItem value="false">false</SelectItem>
+            </SelectContent>
+          </Select>
+        );
+      case 'json':
+        return (
+          <Textarea
+            value={fieldValue}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder='{"key": "value"}'
+            className="font-mono text-sm"
+            rows={3}
+            disabled={disabled}
+          />
+        );
+      default:
+        return (
+          <Input
+            type={flag.valueType === 'number' ? 'number' : 'text'}
+            value={fieldValue}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder={getDefaultValue()}
+            disabled={disabled}
+          />
+        );
+    }
   };
 
   return (
@@ -319,78 +345,36 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
             </Card>
           ) : (
             <div className="space-y-2">
-              {gates.map((gate, index) => {
-                const isDragging = draggedGateId === gate.id;
-                const isDragOver = dragOverGateId === gate.id;
-
-                return (
-                  <Card
-                    key={gate.id}
-                    draggable={!loading}
-                    onDragStart={(e) => handleDragStart(e, gate.id)}
-                    onDragOver={(e) => handleDragOver(e, gate.id)}
-                    onDragLeave={handleDragLeave}
-                    onDrop={(e) => handleDrop(e, gate.id)}
-                    onDragEnd={handleDragEnd}
-                    className={`cursor-move transition-all ${
-                      isDragging ? 'opacity-50' : ''
-                    } ${isDragOver ? 'border-primary border-2' : ''}`}
-                  >
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <GripVertical className="text-muted-foreground h-4 w-4" />
-                          <CardTitle className="text-sm">
-                            Gate {index + 1}
-                            <Badge variant="outline" className="ml-2">
-                              {gate.type}
-                            </Badge>
-                            {gate.type === 'boolean' && index === gates.length - 1 && (
-                              <Badge variant="secondary" className="ml-1 text-xs">
-                                Always last
-                              </Badge>
-                            )}
-                          </CardTitle>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Switch
-                            checked={gate.enabled}
-                            onCheckedChange={() => handleToggleGateEnabled(gate)}
-                            disabled={loading}
-                          />
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8"
-                            onClick={() => handleDeleteGate(gate.id)}
-                            disabled={loading}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      {gate.type === 'actors' && (
-                        <div>
-                          <Label className="text-muted-foreground text-xs">Targeting Specific Actors</Label>
-                          <div className="mt-1 flex flex-wrap gap-1">
-                            {gate.actorIds.map((actorId) => (
-                              <Badge key={actorId} variant="secondary">
-                                {actorId}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                      <div>
-                        <Label className="text-muted-foreground text-xs">Return Value</Label>
-                        <p className="mt-1 font-mono text-sm">{renderGateValue(gate)}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+              {gates.map((gate, index) => (
+                <GateRow
+                  key={gate.id}
+                  gate={gate}
+                  index={index}
+                  totalGates={gates.length}
+                  flag={flag}
+                  configId={config.id}
+                  loading={loading}
+                  editingGateId={editingGateId}
+                  draggedGateId={draggedGateId}
+                  dragOverGateId={dragOverGateId}
+                  onStartEdit={(id) => setEditingGateId(id)}
+                  onCancelEdit={() => setEditingGateId(null)}
+                  onUpdate={async () => {
+                    await reloadConfig();
+                    setEditingGateId(null);
+                  }}
+                  onDelete={handleDeleteGate}
+                  onToggleEnabled={handleToggleGateEnabled}
+                  onDragStart={handleDragStart}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  onDragEnd={handleDragEnd}
+                  renderGateValue={renderGateValue}
+                  renderValueInput={renderValueInput}
+                  parseValue={parseValue}
+                />
+              ))}
             </div>
           )}
 
@@ -399,96 +383,122 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
             <Card className="border-primary">
               <CardHeader>
                 <CardTitle className="text-sm">Add New Gate</CardTitle>
-                {gates.length > 0 && gates[gates.length - 1].type === 'boolean' && newGateType !== 'boolean' && (
+                {gates.length > 0 && gates[gates.length - 1].type === 'boolean' && addGateType !== 'boolean' && (
                   <p className="text-muted-foreground mt-1 text-xs">
-                    💡 This gate will be inserted before the boolean gate to maintain proper ordering.
+                    This gate will be inserted before the boolean gate to maintain proper ordering.
                   </p>
                 )}
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Gate Type</Label>
-                  <Select value={newGateType} onValueChange={(v: 'boolean' | 'actors') => setNewGateType(v)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="boolean">Boolean - Always return value (must be last)</SelectItem>
-                      <SelectItem value="actors">Actors - Target specific actors</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {newGateType === 'actors' && (
-                  <div className="space-y-2">
-                    <Label>Targeting Specific Actors (comma-separated)</Label>
-                    <Input
-                      value={newGateActorIds}
-                      onChange={(e) => setNewGateActorIds(e.target.value)}
-                      placeholder="user-123, user-456, user-789"
+              <CardContent>
+                <Form {...addForm}>
+                  <form onSubmit={addForm.handleSubmit(onAddGate)} className="space-y-4">
+                    <FormField
+                      control={addForm.control}
+                      name="type"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Gate Type</FormLabel>
+                          <Select
+                            value={field.value}
+                            onValueChange={(v: 'boolean' | 'actors') => {
+                              field.onChange(v);
+                              if (v === 'actors') {
+                                addForm.setValue('actorIds', '');
+                              }
+                            }}
+                            disabled={loading}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="boolean">Boolean - Always return value (must be last)</SelectItem>
+                              <SelectItem value="actors">Actors - Target specific actors</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    <p className="text-muted-foreground text-xs">Enter actor IDs separated by commas</p>
-                  </div>
-                )}
 
-                <div className="space-y-2">
-                  <Label>Return Value</Label>
-                  {flag.valueType === 'boolean' ? (
-                    <Select value={newGateValue || 'true'} onValueChange={setNewGateValue}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="true">true</SelectItem>
-                        <SelectItem value="false">false</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  ) : flag.valueType === 'json' ? (
-                    <Textarea
-                      value={newGateValue}
-                      onChange={(e) => setNewGateValue(e.target.value)}
-                      placeholder='{"key": "value"}'
-                      className="font-mono text-sm"
-                      rows={3}
+                    {addGateType === 'actors' && (
+                      <FormField
+                        control={addForm.control}
+                        name="actorIds"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Targeting Specific Actors</FormLabel>
+                            <FormControl>
+                              <Input {...field} placeholder="user-123, user-456, user-789" disabled={loading} />
+                            </FormControl>
+                            <FormDescription>Enter actor IDs separated by commas</FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
+
+                    <FormField
+                      control={addForm.control}
+                      name="value"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Return Value</FormLabel>
+                          <FormControl>{renderValueInput(field.value, field.onChange, loading)}</FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                  ) : (
-                    <Input
-                      type={flag.valueType === 'number' ? 'number' : 'text'}
-                      value={newGateValue}
-                      onChange={(e) => setNewGateValue(e.target.value)}
-                      placeholder={getDefaultValue()}
+
+                    <FormField
+                      control={addForm.control}
+                      name="enabled"
+                      render={({ field }) => (
+                        <FormItem className="flex items-center gap-2">
+                          <FormControl>
+                            <Switch checked={field.value} onCheckedChange={field.onChange} disabled={loading} />
+                          </FormControl>
+                          <FormLabel className="!mt-0">Enabled</FormLabel>
+                        </FormItem>
+                      )}
                     />
-                  )}
-                </div>
 
-                <div className="flex items-center gap-2">
-                  <Switch checked={newGateEnabled} onCheckedChange={setNewGateEnabled} />
-                  <Label>Enabled</Label>
-                </div>
-
-                <div className="flex gap-2">
-                  <Button onClick={handleAddGate} disabled={loading} size="sm">
-                    Add Gate
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      setIsAddingGate(false);
-                      setNewGateType('boolean');
-                      setNewGateEnabled(true);
-                      setNewGateValue('');
-                      setNewGateActorIds('');
-                    }}
-                    variant="ghost"
-                    disabled={loading}
-                    size="sm"
-                  >
-                    Cancel
-                  </Button>
-                </div>
+                    <div className="flex gap-2">
+                      <Button type="submit" disabled={loading} size="sm">
+                        <Check className="mr-1 h-4 w-4" />
+                        Add Gate
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={() => {
+                          setIsAddingGate(false);
+                          addForm.reset({
+                            type: 'boolean',
+                            enabled: true,
+                            value: getDefaultValue(),
+                          });
+                        }}
+                        variant="ghost"
+                        disabled={loading}
+                        size="sm"
+                      >
+                        <X className="mr-1 h-4 w-4" />
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                </Form>
               </CardContent>
             </Card>
           ) : (
-            <Button onClick={() => setIsAddingGate(true)} variant="outline" className="w-full" disabled={loading}>
+            <Button
+              onClick={() => setIsAddingGate(true)}
+              variant="outline"
+              className="w-full"
+              disabled={loading || editingGateId !== null}
+            >
               <Plus className="mr-2 h-4 w-4" />
               Add Gate
             </Button>
@@ -496,5 +506,244 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+interface GateRowProps {
+  gate: Gate;
+  index: number;
+  totalGates: number;
+  flag: Flag;
+  configId: string;
+  loading: boolean;
+  editingGateId: string | null;
+  draggedGateId: string | null;
+  dragOverGateId: string | null;
+  onStartEdit: (id: string) => void;
+  onCancelEdit: () => void;
+  onUpdate: () => Promise<void>;
+  onDelete: (id: string) => void;
+  onToggleEnabled: (gate: Gate) => void;
+  onDragStart: (e: React.DragEvent, gateId: string) => void;
+  onDragOver: (e: React.DragEvent, gateId: string) => void;
+  onDragLeave: () => void;
+  onDrop: (e: React.DragEvent, gateId: string) => void;
+  onDragEnd: () => void;
+  renderGateValue: (gate: Gate) => string;
+  renderValueInput: (value: string, onChange: (v: string) => void, disabled: boolean) => React.ReactNode;
+  parseValue: (valueStr: string, valueType: FlagValueType) => string | boolean | number | object;
+}
+
+function GateRow({
+  gate,
+  index,
+  totalGates,
+  flag,
+  configId,
+  loading,
+  editingGateId,
+  draggedGateId,
+  dragOverGateId,
+  onStartEdit,
+  onCancelEdit,
+  onUpdate,
+  onDelete,
+  onToggleEnabled,
+  onDragStart,
+  onDragOver,
+  onDragLeave,
+  onDrop,
+  onDragEnd,
+  renderGateValue,
+  renderValueInput,
+  parseValue,
+}: GateRowProps) {
+  const isEditing = editingGateId === gate.id;
+  const isDragging = draggedGateId === gate.id;
+  const isDragOver = dragOverGateId === gate.id;
+  const canDrag = !loading && !editingGateId;
+
+  const getDefaultEditValues = useCallback((): UpdateGateInput => {
+    const valueStr =
+      typeof gate.value === 'boolean'
+        ? gate.value.toString()
+        : typeof gate.value === 'object'
+          ? JSON.stringify(gate.value)
+          : String(gate.value);
+
+    if (gate.type === 'actors') {
+      return {
+        type: 'actors',
+        value: valueStr,
+        actorIds: gate.actorIds.join(', '),
+      };
+    }
+    return {
+      type: 'boolean',
+      value: valueStr,
+    };
+  }, [gate]);
+
+  const form = useForm<UpdateGateInput>({
+    resolver: zodResolver(updateGateSchema),
+    mode: 'onTouched',
+    defaultValues: getDefaultEditValues(),
+  });
+
+  // Reset form when starting to edit
+  useEffect(() => {
+    if (isEditing) {
+      form.reset(getDefaultEditValues());
+    }
+  }, [isEditing, form, getDefaultEditValues]);
+
+  async function onSubmit(data: UpdateGateInput) {
+    try {
+      const parsedValue = parseValue(data.value, flag.valueType);
+
+      const updates =
+        gate.type === 'actors'
+          ? {
+              value: parsedValue,
+              actorIds: (data as { actorIds: string }).actorIds
+                .split(',')
+                .map((id) => id.trim())
+                .filter(Boolean),
+            }
+          : {
+              value: parsedValue,
+            };
+
+      await updateGateAction(configId, flag.projectId, flag.id, gate.id, updates);
+      toast.success('Gate updated successfully');
+      await onUpdate();
+    } catch (error) {
+      toast.error(parseErrorMessage(error, 'Failed to update gate'));
+      console.error(error);
+    }
+  }
+
+  return (
+    <Card
+      draggable={canDrag}
+      onDragStart={(e) => onDragStart(e, gate.id)}
+      onDragOver={(e) => onDragOver(e, gate.id)}
+      onDragLeave={onDragLeave}
+      onDrop={(e) => onDrop(e, gate.id)}
+      onDragEnd={onDragEnd}
+      className={`transition-all ${canDrag ? 'cursor-move' : ''} ${isDragging ? 'opacity-50' : ''} ${isDragOver ? 'border-primary border-2' : ''}`}
+    >
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <GripVertical className={`text-muted-foreground h-4 w-4 ${!canDrag ? 'opacity-30' : ''}`} />
+            <CardTitle className="text-sm">
+              Gate {index + 1}
+              <Badge variant="outline" className="ml-2">
+                {gate.type}
+              </Badge>
+              {gate.type === 'boolean' && index === totalGates - 1 && (
+                <Badge variant="secondary" className="ml-1 text-xs">
+                  Always last
+                </Badge>
+              )}
+            </CardTitle>
+          </div>
+          {!isEditing && (
+            <div className="flex items-center gap-2">
+              <Switch
+                checked={gate.enabled}
+                onCheckedChange={() => onToggleEnabled(gate)}
+                disabled={loading || editingGateId !== null}
+              />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => onStartEdit(gate.id)}
+                disabled={loading || editingGateId !== null}
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => onDelete(gate.id)}
+                disabled={loading || editingGateId !== null}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        {isEditing ? (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {gate.type === 'actors' && (
+                <FormField
+                  control={form.control}
+                  name="actorIds"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Targeting Specific Actors</FormLabel>
+                      <FormControl>
+                        <Textarea {...field} placeholder="user-123, user-456, user-789" disabled={loading} rows={3} />
+                      </FormControl>
+                      <FormDescription>Enter actor IDs separated by commas</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+
+              <FormField
+                control={form.control}
+                name="value"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Return Value</FormLabel>
+                    <FormControl>{renderValueInput(field.value, field.onChange, loading)}</FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex gap-2">
+                <Button type="submit" size="sm" variant="outline" disabled={loading}>
+                  <Check className="mr-1 h-4 w-4" />
+                  Save
+                </Button>
+                <Button type="button" size="sm" variant="ghost" onClick={onCancelEdit} disabled={loading}>
+                  <X className="mr-1 h-4 w-4" />
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </Form>
+        ) : (
+          <>
+            {gate.type === 'actors' && (
+              <div>
+                <Label className="text-muted-foreground text-xs">Targeting Specific Actors</Label>
+                <div className="mt-1 flex flex-wrap gap-1">
+                  {gate.actorIds.map((actorId) => (
+                    <Badge key={actorId} variant="secondary">
+                      {actorId}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div>
+              <Label className="text-muted-foreground text-xs">Return Value</Label>
+              <p className="mt-1 font-mono text-sm">{renderGateValue(gate)}</p>
+            </div>
+          </>
+        )}
+      </CardContent>
+    </Card>
   );
 }
