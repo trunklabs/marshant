@@ -11,7 +11,7 @@ export const booleanGateSchema = baseGateSchema.extend({
 
 export const actorsGateSchema = baseGateSchema.extend({
   type: z.literal('actors'),
-  actorIds: z.string().min(1, 'At least one actor ID is required'),
+  actorIds: z.array(z.string().min(1)).min(1, 'At least one actor ID is required'),
 });
 
 export const createGateSchema = z.discriminatedUnion('type', [booleanGateSchema, actorsGateSchema]);
@@ -24,7 +24,7 @@ export const updateBooleanGateSchema = z.object({
 export const updateActorsGateSchema = z.object({
   type: z.literal('actors'),
   value: z.string().min(1, 'Value is required'),
-  actorIds: z.string().min(1, 'At least one actor ID is required'),
+  actorIds: z.array(z.string().min(1)).min(1, 'At least one actor ID is required'),
 });
 
 export const updateGateSchema = z.discriminatedUnion('type', [updateBooleanGateSchema, updateActorsGateSchema]);
