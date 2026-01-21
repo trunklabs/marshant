@@ -4,9 +4,6 @@
 ---
 
 feat: SDK local evaluation with bulk config fetch
-
-BREAKING CHANGE: The SDK now requires async initialization and the per-flag evaluate endpoint has been removed.
-
 - `createClient()` is now async and fetches all flag configs on initialization
 - Flag evaluation happens locally (synchronous, in-memory)
 - Background polling refreshes configs every 15 seconds (configurable)
