@@ -11,6 +11,14 @@ import type {
   Gate,
 } from '@marshant/core';
 
+export type FlagConfigWithMetadata = {
+  key: string;
+  valueType: FlagValueType;
+  enabled: boolean;
+  defaultValue: FlagValueTypeMap[FlagValueType];
+  gates: Gate[];
+};
+
 export class FlagConfigRepository {
   async findById(id: FlagEnvironmentConfigId): Promise<FlagEnvironmentConfig | null> {
     const result = await db.query.flagEnvironmentConfigs.findFirst({
@@ -60,6 +68,30 @@ export class FlagConfigRepository {
     });
 
     return results.map(this.toDomain);
+  }
+
+  async findAllByProjectAndEnvironment(
+    projectId: ProjectId,
+    environmentKey: string
+  ): Promise<FlagConfigWithMetadata[]> {
+    const results = await db
+      .select({
+        config: flagEnvironmentConfigs,
+        flagKey: flags.key,
+        flagValueType: flags.valueType,
+      })
+      .from(flagEnvironmentConfigs)
+      .innerJoin(flags, eq(flagEnvironmentConfigs.flagId, flags.id))
+      .innerJoin(environments, eq(flagEnvironmentConfigs.environmentId, environments.id))
+      .where(and(eq(flags.projectId, projectId), eq(environments.key, environmentKey)));
+
+    return results.map((row) => ({
+      key: row.flagKey,
+      valueType: row.flagValueType as FlagValueType,
+      enabled: row.config.enabled,
+      defaultValue: row.config.defaultValue as FlagValueTypeMap[FlagValueType],
+      gates: (row.config.gates as Gate[]) || [],
+    }));
   }
 
   async create(data: Omit<FlagEnvironmentConfig, 'id'>): Promise<FlagEnvironmentConfig> {

@@ -1,10 +1,36 @@
-import type { Actor, EvaluationResult } from '@marshant/core';
+import {
+  evaluateFlag,
+  type Actor,
+  type EvaluationResult,
+  type FlagEnvironmentConfig,
+  type Gate,
+  type FlagValueType,
+  type FlagValueTypeMap,
+} from '@marshant/core';
 
 export type ClientOptions = {
   apiKey: string;
   projectKey: string;
   environmentKey: string;
   baseUrl?: string;
+  /**
+   * Interval in milliseconds to refresh flag configs.
+   * Set to 0 to disable polling (useful for serverless).
+   * @default 15000 (15 seconds)
+   */
+  refreshInterval?: number;
+};
+
+type FlagConfig = {
+  key: string;
+  valueType: FlagValueType;
+  enabled: boolean;
+  defaultValue: FlagValueTypeMap[FlagValueType];
+  gates: Gate[];
+};
+
+type GetConfigsResponse = {
+  flags: FlagConfig[];
 };
 
 /**
@@ -17,7 +43,7 @@ export type Client = {
    * @param actor - The actor to evaluate the flag for
    * @returns The evaluation result containing enabled status, value, and reason
    */
-  evaluateFlag(flagKey: string, actor: Actor): Promise<EvaluationResult>;
+  evaluateFlag(flagKey: string, actor: Actor): EvaluationResult;
 
   /**
    * Checks if a feature flag is enabled for a given actor.
@@ -25,58 +51,89 @@ export type Client = {
    * @param actor - The actor to check the flag for
    * @returns true if the flag is enabled, false otherwise
    */
-  isEnabled(flagKey: string, actor: Actor): Promise<boolean>;
+  isEnabled(flagKey: string, actor: Actor): boolean;
 
   /**
    * Gets the value of a feature flag for a given actor.
    * @param flagKey - The key of the flag to get the value for
    * @param actor - The actor to get the flag value for
-   * @param defaultValue - The default value to return if evaluation fails
+   * @param defaultValue - The default value to return if the flag is not found
    * @returns The flag value or the default value
    */
-  getValue<T>(flagKey: string, actor: Actor, defaultValue: T): Promise<T>;
+  getValue<T>(flagKey: string, actor: Actor, defaultValue: T): T;
+
+  /**
+   * Stops the background polling for flag config updates.
+   * Call this when you're done using the client to clean up resources.
+   */
+  close(): void;
 };
 
 /**
- * Error thrown when flag evaluation fails.
+ * Error thrown when the client fails to initialize.
  */
-export class EvaluationError extends Error {
+export class InitializationError extends Error {
   public readonly code: string;
-  public readonly statusCode: number;
+  public readonly statusCode?: number;
 
-  constructor(message: string, code: string, statusCode: number) {
+  constructor(message: string, code: string, statusCode?: number) {
     super(message);
-    this.name = 'EvaluationError';
+    this.name = 'InitializationError';
     this.code = code;
     this.statusCode = statusCode;
   }
 }
 
 const DEFAULT_BASE_URL = 'http://localhost:3000';
+const DEFAULT_REFRESH_INTERVAL = 15000;
 
 /**
  * Creates a new Marshant SDK client.
+ *
+ * The client fetches all flag configurations on initialization and evaluates
+ * flags locally for fast, synchronous access. Background polling keeps the
+ * configs up to date.
  *
  * @example
  * ```ts
  * import { createClient } from '@marshant/sdk';
  *
- * const client = createClient({
- *   apiKey: 'marshant_pk_xxx',
+ * const client = await createClient({
+ *   apiKey: 'mc_xxx',
  *   projectKey: 'my-project',
  *   environmentKey: 'production',
  *   baseUrl: 'https://your-app.example.com',
  * });
  *
- * const enabled = await client.isEnabled('new-feature', { id: 'user-123' });
+ * // Synchronous flag evaluation
+ * const enabled = client.isEnabled('new-feature', { id: 'user-123' });
+ * const limit = client.getValue('rate-limit', { id: 'user-123' }, 100);
  *
- * const result = await client.evaluateFlag('new-feature', { id: 'user-123' });
+ * // Clean up when done
+ * client.close();
+ * ```
  *
- * const limit = await client.getValue('rate-limit', { id: 'user-123' }, 100);
+ * @example Serverless usage (no polling)
+ * ```ts
+ * const client = await createClient({
+ *   apiKey: 'mc_xxx',
+ *   projectKey: 'my-project',
+ *   environmentKey: 'production',
+ *   refreshInterval: 0, // disable polling
+ * });
+ *
+ * const enabled = client.isEnabled('flag', { id: 'user-123' });
+ * // No need to call close() - no background polling running
  * ```
  */
-export function createClient(options: ClientOptions): Client {
-  const { apiKey, projectKey, environmentKey, baseUrl = DEFAULT_BASE_URL } = options;
+export async function createClient(options: ClientOptions): Promise<Client> {
+  const {
+    apiKey,
+    projectKey,
+    environmentKey,
+    baseUrl = DEFAULT_BASE_URL,
+    refreshInterval = DEFAULT_REFRESH_INTERVAL,
+  } = options;
 
   if (!apiKey) {
     throw new Error('apiKey is required');
@@ -90,7 +147,62 @@ export function createClient(options: ClientOptions): Client {
     throw new Error('environmentKey is required');
   }
 
-  async function evaluateFlag(flagKey: string, actor: Actor): Promise<EvaluationResult> {
+  // Internal state
+  let configs: Map<string, FlagConfig> = new Map();
+  let pollingInterval: ReturnType<typeof setInterval> | null = null;
+
+  async function fetchConfigs(): Promise<Map<string, FlagConfig>> {
+    const url = new URL(`${baseUrl}/api/v1/configs`);
+    url.searchParams.set('projectKey', projectKey);
+    url.searchParams.set('environmentKey', environmentKey);
+
+    const response = await fetch(url.toString(), {
+      method: 'GET',
+      headers: {
+        'X-API-Key': apiKey,
+      },
+    });
+
+    if (!response.ok) {
+      const data = (await response.json().catch(() => ({}))) as { error?: string; code?: string };
+      throw new InitializationError(
+        data.error || 'Failed to fetch flag configs',
+        data.code || 'FETCH_ERROR',
+        response.status
+      );
+    }
+
+    const data = (await response.json()) as GetConfigsResponse;
+    const configMap = new Map<string, FlagConfig>();
+
+    for (const flag of data.flags) {
+      configMap.set(flag.key, flag);
+    }
+
+    return configMap;
+  }
+
+  async function refresh(): Promise<void> {
+    try {
+      configs = await fetchConfigs();
+    } catch (error) {
+      // Graceful degradation: keep using cached configs if refresh fails
+      console.warn('[marshant-sdk] Failed to refresh flag configs, using cached values:', error);
+    }
+  }
+
+  function toFlagEnvironmentConfig(config: FlagConfig): FlagEnvironmentConfig {
+    return {
+      id: '' as FlagEnvironmentConfig['id'],
+      flagId: '' as FlagEnvironmentConfig['flagId'],
+      environmentId: '' as FlagEnvironmentConfig['environmentId'],
+      enabled: config.enabled,
+      defaultValue: config.defaultValue,
+      gates: config.gates,
+    };
+  }
+
+  function doEvaluateFlag(flagKey: string, actor: Actor): EvaluationResult {
     if (!flagKey) {
       throw new Error('flagKey is required');
     }
@@ -99,56 +211,61 @@ export function createClient(options: ClientOptions): Client {
       throw new Error('actor with id is required');
     }
 
-    const response = await fetch(`${baseUrl}/api/v1/flags/evaluate`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-Key': apiKey,
-      },
-      body: JSON.stringify({
-        projectKey,
-        environmentKey,
+    const config = configs.get(flagKey);
+
+    if (!config) {
+      return {
         flagKey,
-        actor,
-      }),
-    });
-
-    const data = (await response.json()) as EvaluationResult | { error?: string; code?: string };
-
-    if (!response.ok) {
-      const errorData = data as { error?: string; code?: string };
-      throw new EvaluationError(
-        errorData.error || 'Flag evaluation failed',
-        errorData.code || 'UNKNOWN_ERROR',
-        response.status
-      );
+        value: false,
+        enabled: false,
+        reason: 'flag not found',
+      };
     }
 
-    return data as EvaluationResult;
+    return evaluateFlag(flagKey, toFlagEnvironmentConfig(config), actor);
   }
 
-  async function isEnabled(flagKey: string, actor: Actor): Promise<boolean> {
+  function doIsEnabled(flagKey: string, actor: Actor): boolean {
     try {
-      const result = await evaluateFlag(flagKey, actor);
+      const result = doEvaluateFlag(flagKey, actor);
       return result.enabled;
     } catch {
       return false;
     }
   }
 
-  async function getValue<T>(flagKey: string, actor: Actor, defaultValue: T): Promise<T> {
+  function doGetValue<T>(flagKey: string, actor: Actor, defaultValue: T): T {
     try {
-      const result = await evaluateFlag(flagKey, actor);
+      const result = doEvaluateFlag(flagKey, actor);
+      if (!result.enabled) {
+        return defaultValue;
+      }
       return result.value as T;
     } catch {
       return defaultValue;
     }
   }
 
+  function close(): void {
+    if (pollingInterval) {
+      clearInterval(pollingInterval);
+      pollingInterval = null;
+    }
+  }
+
+  // Initial fetch (throws on failure)
+  configs = await fetchConfigs();
+
+  // Start polling if enabled
+  if (refreshInterval > 0) {
+    pollingInterval = setInterval(refresh, refreshInterval);
+  }
+
   return {
-    evaluateFlag,
-    isEnabled,
-    getValue,
+    evaluateFlag: doEvaluateFlag,
+    isEnabled: doIsEnabled,
+    getValue: doGetValue,
+    close,
   };
 }
 
