@@ -19,6 +19,7 @@ import { Badge } from '@/ui/badge';
 import { Label } from '@/ui/label';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDescription } from '@/ui/form';
 import { parseErrorMessage } from '@/lib/utils';
+import { ActorIdsInput } from '@/components/actor-ids-input';
 import { createGateSchema, updateGateSchema, type CreateGateInput, type UpdateGateInput } from '@/schemas/gate-schemas';
 import {
   addGateAction,
@@ -130,10 +131,7 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
           : {
               type: 'actors' as const,
               enabled: data.enabled,
-              actorIds: data.actorIds
-                .split(',')
-                .map((id) => id.trim())
-                .filter(Boolean),
+              actorIds: data.actorIds,
               value: parsedValue,
             };
 
@@ -403,7 +401,7 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
                             onValueChange={(v: 'boolean' | 'actors') => {
                               field.onChange(v);
                               if (v === 'actors') {
-                                addForm.setValue('actorIds', '');
+                                addForm.setValue('actorIds', []);
                               }
                             }}
                             disabled={loading}
@@ -431,9 +429,14 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
                           <FormItem>
                             <FormLabel>Targeting Specific Actors</FormLabel>
                             <FormControl>
-                              <Input {...field} placeholder="user-123, user-456, user-789" disabled={loading} />
+                              <ActorIdsInput
+                                value={field.value ?? []}
+                                onChange={field.onChange}
+                                disabled={loading}
+                                placeholder="Add actor ID..."
+                              />
                             </FormControl>
-                            <FormDescription>Enter actor IDs separated by commas</FormDescription>
+                            <FormDescription>Press Enter or comma to add each actor ID</FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
@@ -575,7 +578,7 @@ function GateRow({
       return {
         type: 'actors',
         value: valueStr,
-        actorIds: gate.actorIds.join(', '),
+        actorIds: [...gate.actorIds],
       };
     }
     return {
@@ -605,10 +608,7 @@ function GateRow({
         gate.type === 'actors'
           ? {
               value: parsedValue,
-              actorIds: (data as { actorIds: string }).actorIds
-                .split(',')
-                .map((id) => id.trim())
-                .filter(Boolean),
+              actorIds: (data as { actorIds: string[] }).actorIds,
             }
           : {
               value: parsedValue,
@@ -690,9 +690,14 @@ function GateRow({
                     <FormItem>
                       <FormLabel>Targeting Specific Actors</FormLabel>
                       <FormControl>
-                        <Textarea {...field} placeholder="user-123, user-456, user-789" disabled={loading} rows={3} />
+                        <ActorIdsInput
+                          value={field.value ?? []}
+                          onChange={field.onChange}
+                          disabled={loading}
+                          placeholder="Add actor ID..."
+                        />
                       </FormControl>
-                      <FormDescription>Enter actor IDs separated by commas</FormDescription>
+                      <FormDescription>Press Enter or comma to add each actor ID</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
