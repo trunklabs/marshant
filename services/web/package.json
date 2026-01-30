@@ -43,7 +43,7 @@
     "dotenv": "17.2.3",
     "drizzle-orm": "0.45.1",
     "ioredis": "5.9.2",
-    "lucide-react": "0.562.0",
+    "lucide-react": "0.563.0",
     "next": "16.1.6",
     "next-themes": "0.4.6",
     "pg": "8.17.2",
