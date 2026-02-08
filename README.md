@@ -3,7 +3,7 @@
 
   # Marshant Feature Flag
 
-  **A powerful, self-hosted feature flag management system**
+  **A simple, self-hosted feature flag management system**
 
   [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 </div>
@@ -16,7 +16,7 @@
 
 ## 🚀 Overview
 
-Marshant Feature Flag is a modern, self-hosted feature flag management system designed to give you full control over feature rollouts, A/B testing, and progressive delivery. Built with TypeScript and Next.js, it provides a clean and intuitive interface for managing feature flags across your applications.
+Marshant Feature Flag is a modern, self-hosted feature flag management system designed to give you full control over feature rollouts, simple A/B testing, and progressive delivery. Built with TypeScript and Next.js, it provides a clean and intuitive interface for managing feature flags across your applications.
 
 ## ✨ Features
 
