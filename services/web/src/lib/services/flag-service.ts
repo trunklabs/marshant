@@ -90,6 +90,14 @@ export class FlagService {
     await this.flagRepo.delete(id);
   }
 
+  async getFlagConfigById(id: string): Promise<FlagEnvironmentConfig> {
+    const config = await this.configRepo.findById(id);
+    if (!config) {
+      throw new FlagEnvironmentConfigNotFoundError(id, '');
+    }
+    return config;
+  }
+
   async getFlagConfig(flagId: FlagId, environmentId: EnvironmentId): Promise<FlagEnvironmentConfig> {
     const config = await this.configRepo.findByFlagAndEnvironment(flagId, environmentId);
     if (!config) {

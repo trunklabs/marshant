@@ -19,7 +19,7 @@ export const auth = betterAuth({
   user: {
     changeEmail: {
       enabled: true,
-      updateEmailWithoutVerification: true,
+      updateEmailWithoutVerification: isDevelopment,
     },
   },
   /**`nextCookies` plugin must be last */

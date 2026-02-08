@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { MoreVertical, Pencil, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -42,8 +42,8 @@ export function FlagActions({ flag }: FlagActionsProps) {
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const form = useForm<UpdateFlagInput>({
-    resolver: zodResolver(updateFlagSchema),
+  const form = useForm({
+    resolver: standardSchemaResolver(updateFlagSchema),
     mode: 'onTouched',
     defaultValues: {
       name: flag.name,

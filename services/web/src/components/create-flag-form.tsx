@@ -1,7 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/ui/button';
 import { Card, CardContent } from '@/ui/card';
@@ -25,8 +25,8 @@ interface CreateFlagFormProps {
 export function CreateFlagForm({ projects, preselectedProjectId }: CreateFlagFormProps) {
   const router = useRouter();
 
-  const form = useForm<CreateFlagInput>({
-    resolver: zodResolver(createFlagSchema),
+  const form = useForm({
+    resolver: standardSchemaResolver(createFlagSchema),
     mode: 'onTouched',
     defaultValues: {
       projectId: preselectedProjectId || projects[0]?.id || '',

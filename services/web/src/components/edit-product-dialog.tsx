@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Button } from '@/ui/button';
 import {
   Dialog,
@@ -41,16 +41,16 @@ export function EditProductDialog({ product }: { product: Project }) {
   const [loadingEnvs, setLoadingEnvs] = useState(false);
   const { showToast } = useToast();
 
-  const projectForm = useForm<UpdateProjectInput>({
-    resolver: zodResolver(updateProjectSchema),
+  const projectForm = useForm({
+    resolver: standardSchemaResolver(updateProjectSchema),
     mode: 'onTouched',
     defaultValues: {
       name: product.name,
     },
   });
 
-  const addEnvForm = useForm<CreateEnvironmentInput>({
-    resolver: zodResolver(createEnvironmentSchema),
+  const addEnvForm = useForm({
+    resolver: standardSchemaResolver(createEnvironmentSchema),
     mode: 'onTouched',
     defaultValues: {
       name: '',
@@ -255,8 +255,8 @@ function EnvRow({
 }) {
   const { showToast } = useToast();
 
-  const form = useForm<UpdateEnvironmentInput>({
-    resolver: zodResolver(updateEnvironmentSchema),
+  const form = useForm({
+    resolver: standardSchemaResolver(updateEnvironmentSchema),
     mode: 'onTouched',
     defaultValues: {
       name: env.name,

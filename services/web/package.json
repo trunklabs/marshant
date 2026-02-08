@@ -4,11 +4,12 @@
   "private": true,
   "dockerTarget": "web",
   "scripts": {
-    "dev": "next dev -p 3005",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "bash e2e/run.sh"
   },
   "dependencies": {
     "@daveyplate/better-auth-ui": "3.3.15",
@@ -42,7 +43,6 @@
     "clsx": "2.1.1",
     "dotenv": "17.2.3",
     "drizzle-orm": "0.45.1",
-    "ioredis": "5.9.2",
     "lucide-react": "0.562.0",
     "next": "16.1.6",
     "next-themes": "0.4.6",

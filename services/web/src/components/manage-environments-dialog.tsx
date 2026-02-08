@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Plus, Trash2, Pencil, X, Check } from 'lucide-react';
@@ -55,8 +55,8 @@ export function ManageEnvironmentsDialog({ project, open, onOpenChange }: Manage
     }
   }, [open, loadEnvironments]);
 
-  const addForm = useForm<CreateEnvironmentInput>({
-    resolver: zodResolver(createEnvironmentSchema),
+  const addForm = useForm({
+    resolver: standardSchemaResolver(createEnvironmentSchema),
     mode: 'onTouched',
     defaultValues: {
       name: '',
@@ -244,8 +244,8 @@ function EnvRow({
 }) {
   const isEditing = editingId === env.id;
 
-  const form = useForm<UpdateEnvironmentInput>({
-    resolver: zodResolver(updateEnvironmentSchema),
+  const form = useForm({
+    resolver: standardSchemaResolver(updateEnvironmentSchema),
     mode: 'onTouched',
     defaultValues: {
       name: env.name,

@@ -1,7 +1,7 @@
 'use client';
 
 import { useForm, useFieldArray } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/ui/button';
 import { Card, CardContent } from '@/ui/card';
@@ -16,8 +16,8 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage, FormDes
 export function CreateProjectForm() {
   const router = useRouter();
 
-  const form = useForm<CreateProjectInput>({
-    resolver: zodResolver(createProjectSchema),
+  const form = useForm({
+    resolver: standardSchemaResolver(createProjectSchema),
     mode: 'onTouched',
     defaultValues: {
       name: '',
