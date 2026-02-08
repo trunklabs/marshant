@@ -6,6 +6,7 @@ import { OrganizationSwitcher, UserButton } from '@daveyplate/better-auth-ui';
 import { NavMain } from '@/components/nav-main';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuItem } from '@/ui/sidebar';
+import { invalidateSessionCache } from '@/server/session-cache';
 
 const navMain = [
   {
@@ -29,9 +30,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const router = useRouter();
 
   const handleOrganizationChange = () => {
-    // I have no idea why but first refresh seems to be still hitting the cache
-    router.refresh();
-    router.refresh();
+    React.startTransition(async () => {
+      await invalidateSessionCache();
+      router.refresh();
+    });
   };
 
   return (

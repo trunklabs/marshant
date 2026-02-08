@@ -1,7 +1,12 @@
 {
   "name": "@marshant/sdk",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trunklabs/marshant.git",
+    "directory": "packages/sdk"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -13,13 +18,11 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format cjs,esm --dts --clean",
+    "build": "tsup",
     "test": "vitest run"
   },
-  "dependencies": {
-    "@marshant/core": "workspace:*"
-  },
   "devDependencies": {
+    "@marshant/core": "workspace:*",
     "@types/node": "20.19.25",
     "tsup": "8.5.1",
     "typescript": "5.9.3"

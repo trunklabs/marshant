@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { MoreVertical, Pencil, Trash2, Settings, Layers } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -44,8 +44,8 @@ export function ProjectActions({ project }: ProjectActionsProps) {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [environmentsOpen, setEnvironmentsOpen] = useState(false);
 
-  const form = useForm<UpdateProjectInput>({
-    resolver: zodResolver(updateProjectSchema),
+  const form = useForm({
+    resolver: standardSchemaResolver(updateProjectSchema),
     mode: 'onTouched',
     defaultValues: {
       name: project.name,

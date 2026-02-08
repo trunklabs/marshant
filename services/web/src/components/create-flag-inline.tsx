@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Button } from '@/ui/button';
 import {
   Dialog,
@@ -32,8 +32,8 @@ export function CreateFlagInline(props: { projectId?: string; envId?: string; pr
   const canPickProject = !props.projectId;
   const projectOptions = props.products ?? [];
 
-  const form = useForm<CreateFlagInput>({
-    resolver: zodResolver(createFlagSchema),
+  const form = useForm({
+    resolver: standardSchemaResolver(createFlagSchema),
     mode: 'onTouched',
     defaultValues: {
       projectId: props.projectId || '',

@@ -1,6 +1,7 @@
 'use server';
 
 import { FlagService } from '@/lib/services/flag-service';
+import { ProjectService } from '@/lib/services/project-service';
 import { revalidatePath } from 'next/cache';
 import { getSessionContext } from '@/server/auth-context';
 import type {
@@ -13,12 +14,22 @@ import type {
   EvaluationResult,
 } from '@marshant/core';
 
+/**
+ * Verify the current user owns the project.
+ * Throws ProjectAccessDeniedError if not.
+ */
+async function verifyProjectOwnership(projectId: string) {
+  const ctx = await getSessionContext();
+  const projectService = new ProjectService();
+  await projectService.getProject(projectId, ctx.ownerId, ctx.ownerType);
+}
+
 // ============================================================================
 // Flag CRUD
 // ============================================================================
 
 export async function listFlagsAction(projectId: string): Promise<Flag[]> {
-  await getSessionContext();
+  await verifyProjectOwnership(projectId);
   const flagService = new FlagService();
   return flagService.listFlags(projectId);
 }
@@ -26,11 +37,13 @@ export async function listFlagsAction(projectId: string): Promise<Flag[]> {
 export async function getFlagAction(id: string): Promise<Flag> {
   await getSessionContext();
   const flagService = new FlagService();
-  return flagService.getFlag(id);
+  const flag = await flagService.getFlag(id);
+  await verifyProjectOwnership(flag.projectId);
+  return flag;
 }
 
 export async function getFlagByKeyAction(projectId: string, key: string): Promise<Flag> {
-  await getSessionContext();
+  await verifyProjectOwnership(projectId);
   const flagService = new FlagService();
   return flagService.getFlagByKey(projectId, key);
 }
@@ -42,7 +55,7 @@ export async function createFlagAction(data: {
   valueType: FlagValueType;
   defaultValue: FlagValueTypeMap[FlagValueType];
 }): Promise<Flag> {
-  await getSessionContext();
+  await verifyProjectOwnership(data.projectId);
   const flagService = new FlagService();
   const flag = await flagService.createFlag(data);
   revalidatePath('/app');
@@ -59,7 +72,7 @@ export async function updateFlagAction(
     defaultValue?: FlagValueTypeMap[FlagValueType];
   }
 ): Promise<Flag> {
-  await getSessionContext();
+  await verifyProjectOwnership(projectId);
   const flagService = new FlagService();
   const flag = await flagService.updateFlag(id, data);
   revalidatePath('/app');
@@ -71,6 +84,8 @@ export async function updateFlagAction(
 export async function deleteFlagAction(id: string): Promise<void> {
   await getSessionContext();
   const flagService = new FlagService();
+  const flag = await flagService.getFlag(id);
+  await verifyProjectOwnership(flag.projectId);
   await flagService.deleteFlag(id);
   revalidatePath('/app');
   revalidatePath('/app/projects');
@@ -84,12 +99,16 @@ export async function deleteFlagAction(id: string): Promise<void> {
 export async function listFlagConfigsAction(flagId: string): Promise<FlagEnvironmentConfig[]> {
   await getSessionContext();
   const flagService = new FlagService();
+  const flag = await flagService.getFlag(flagId);
+  await verifyProjectOwnership(flag.projectId);
   return flagService.listFlagConfigs(flagId);
 }
 
 export async function getFlagConfigAction(flagId: string, environmentId: string): Promise<FlagEnvironmentConfig> {
   await getSessionContext();
   const flagService = new FlagService();
+  const flag = await flagService.getFlag(flagId);
+  await verifyProjectOwnership(flag.projectId);
   return flagService.getFlagConfig(flagId, environmentId);
 }
 
@@ -98,7 +117,7 @@ export async function getFlagConfigByKeysAction(
   environmentKey: string,
   flagKey: string
 ): Promise<FlagEnvironmentConfig> {
-  await getSessionContext();
+  await verifyProjectOwnership(projectId);
   const flagService = new FlagService();
   return flagService.getFlagConfigByKeys(projectId, environmentKey, flagKey);
 }
@@ -111,7 +130,7 @@ export async function createFlagConfigAction(data: {
   defaultValue: FlagValueTypeMap[FlagValueType];
   gates?: Gate[];
 }): Promise<FlagEnvironmentConfig> {
-  await getSessionContext();
+  await verifyProjectOwnership(data.projectId);
   const flagService = new FlagService();
   const config = await flagService.createFlagConfig({
     flagId: data.flagId,
@@ -135,7 +154,7 @@ export async function updateFlagConfigAction(
     gates?: Gate[];
   }
 ): Promise<FlagEnvironmentConfig> {
-  await getSessionContext();
+  await verifyProjectOwnership(projectId);
   const flagService = new FlagService();
   const config = await flagService.updateFlagConfig(configId, data);
   revalidatePath('/app');
@@ -146,6 +165,9 @@ export async function updateFlagConfigAction(
 export async function deleteFlagConfigAction(configId: string): Promise<void> {
   await getSessionContext();
   const flagService = new FlagService();
+  const config = await flagService.getFlagConfigById(configId);
+  const flag = await flagService.getFlag(config.flagId);
+  await verifyProjectOwnership(flag.projectId);
   await flagService.deleteFlagConfig(configId);
   revalidatePath('/app');
   revalidatePath('/app/flags');
@@ -161,7 +183,7 @@ export async function addGateAction(
   flagId: string,
   gate: Omit<Gate, 'id'>
 ): Promise<FlagEnvironmentConfig> {
-  await getSessionContext();
+  await verifyProjectOwnership(projectId);
   const flagService = new FlagService();
 
   const config = await flagService.getFlagConfig(
@@ -205,7 +227,7 @@ export async function updateGateAction(
   gateId: string,
   updates: Partial<Omit<Gate, 'id'>>
 ): Promise<FlagEnvironmentConfig> {
-  await getSessionContext();
+  await verifyProjectOwnership(projectId);
   const flagService = new FlagService();
 
   const config = await flagService.getFlagConfig(
@@ -232,7 +254,7 @@ export async function deleteGateAction(
   flagId: string,
   gateId: string
 ): Promise<FlagEnvironmentConfig> {
-  await getSessionContext();
+  await verifyProjectOwnership(projectId);
   const flagService = new FlagService();
 
   const config = await flagService.getFlagConfig(
@@ -257,7 +279,7 @@ export async function reorderGatesAction(
   flagId: string,
   gateIds: string[]
 ): Promise<FlagEnvironmentConfig> {
-  await getSessionContext();
+  await verifyProjectOwnership(projectId);
   const flagService = new FlagService();
 
   const config = await flagService.getFlagConfig(
@@ -287,7 +309,7 @@ export async function evaluateFlagAction(
   flagKey: string,
   actor: Actor
 ): Promise<EvaluationResult> {
-  await getSessionContext();
+  await verifyProjectOwnership(projectId);
   const flagService = new FlagService();
   return flagService.evaluateFlag(projectId, environmentKey, flagKey, actor);
 }

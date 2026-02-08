@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { Button } from '@/ui/button';
 import {
   Dialog,
@@ -34,8 +34,8 @@ export function CreateProjectInline({ trigger, open: controlledOpen, onOpenChang
   const setOpen = onOpenChange || setInternalOpen;
   const { showToast } = useToast();
 
-  const form = useForm<CreateProjectInput>({
-    resolver: zodResolver(createProjectSchema),
+  const form = useForm({
+    resolver: standardSchemaResolver(createProjectSchema),
     mode: 'onTouched',
     defaultValues: {
       name: '',

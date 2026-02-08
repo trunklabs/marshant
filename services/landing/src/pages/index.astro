@@ -1,0 +1,416 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Marshant - Feature Flags without the complexity">
+  <!-- Header -->
+  <header class="border-b border-border">
+    <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+      <a href="/" class="flex items-center gap-2">
+        <img src="/logo.webp" alt="Marshant Logo" width="36" height="36" class="h-9 w-9 object-contain" />
+        <span class="text-xl font-semibold">Marshant</span>
+      </a>
+
+      <nav class="hidden items-center gap-6 md:flex">
+        <a href="#features" class="text-sm text-muted-foreground transition-colors hover:text-foreground">Features</a>
+        <a href="#sdks" class="text-sm text-muted-foreground transition-colors hover:text-foreground">SDKs</a>
+        <a
+          href="https://github.com/trunklabs/marshant"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          GitHub
+        </a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <button
+          id="theme-toggle"
+          type="button"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border text-sm font-medium transition-colors hover:bg-muted"
+          aria-label="Toggle theme"
+        >
+          <!-- Sun icon (shown in dark mode) -->
+          <svg class="hidden h-4 w-4 dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2"></path>
+            <path d="M12 20v2"></path>
+            <path d="m4.93 4.93 1.41 1.41"></path>
+            <path d="m17.66 17.66 1.41 1.41"></path>
+            <path d="M2 12h2"></path>
+            <path d="M20 12h2"></path>
+            <path d="m6.34 17.66-1.41 1.41"></path>
+            <path d="m19.07 4.93-1.41 1.41"></path>
+          </svg>
+          <!-- Moon icon (shown in light mode) -->
+          <svg class="block h-4 w-4 dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+        </button>
+        <a
+          href="https://github.com/trunklabs/marshant"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          Get Started
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <!-- Hero Section -->
+    <section class="mx-auto max-w-6xl px-4 py-24 text-center md:py-32">
+      <span class="mb-6 inline-flex items-center rounded-md bg-secondary px-3 py-1 text-sm font-medium text-secondary-foreground">
+        Open Source
+      </span>
+      <h1 class="mb-6 text-4xl font-bold tracking-tight md:text-6xl">
+        Feature Flags
+        <br />
+        <span class="text-muted-foreground">without the complexity</span>
+      </h1>
+      <p class="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground md:text-xl">
+        Self-hosted, open-source feature flag management. Simple setup, no paywall, no compromises. Ship features with
+        confidence.
+      </p>
+      <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <a
+          href="https://github.com/trunklabs/marshant"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex h-11 items-center justify-center rounded-md bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          Get Started
+          <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+        <a
+          href="https://github.com/trunklabs/marshant"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex h-11 items-center justify-center rounded-md border border-border bg-background px-6 text-sm font-medium transition-colors hover:bg-muted"
+        >
+          <svg class="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+          </svg>
+          Star on GitHub
+        </a>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="border-t border-border py-24">
+      <div class="mx-auto max-w-6xl px-4">
+        <div class="mb-16 text-center">
+          <h2 class="mb-4 text-3xl font-bold md:text-4xl">Everything you need</h2>
+          <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+            Powerful feature flag management without the bloat. Focus on what matters &mdash; shipping features.
+          </p>
+        </div>
+
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <!-- Projects & Environments -->
+          <div class="rounded-xl border border-border bg-card/50 p-6 transition-colors hover:bg-card">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path>
+                <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"></path>
+                <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"></path>
+              </svg>
+            </div>
+            <h3 class="mb-2 text-lg font-semibold">Projects & Environments</h3>
+            <p class="text-sm text-muted-foreground">Organize flags into projects with multiple environments. Dev, staging, production &mdash; all in one place.</p>
+          </div>
+
+          <!-- Flexible Flag Types -->
+          <div class="rounded-xl border border-border bg-card/50 p-6 transition-colors hover:bg-card">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="12" x="2" y="6" rx="2"></rect>
+                <circle cx="14" cy="12" r="4"></circle>
+              </svg>
+            </div>
+            <h3 class="mb-2 text-lg font-semibold">Flexible Flag Types</h3>
+            <p class="text-sm text-muted-foreground">Boolean, string, number, or JSON values. Return exactly what your application needs.</p>
+          </div>
+
+          <!-- Targeting & Gates -->
+          <div class="rounded-xl border border-border bg-card/50 p-6 transition-colors hover:bg-card">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+              </svg>
+            </div>
+            <h3 class="mb-2 text-lg font-semibold">Targeting & Gates</h3>
+            <p class="text-sm text-muted-foreground">Target specific users or groups with actor-based gates. Roll out features gradually with precision.</p>
+          </div>
+
+          <!-- Simple & Fast -->
+          <div class="rounded-xl border border-border bg-card/50 p-6 transition-colors hover:bg-card">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path>
+              </svg>
+            </div>
+            <h3 class="mb-2 text-lg font-semibold">Simple & Fast</h3>
+            <p class="text-sm text-muted-foreground">No complex setup or steep learning curve. Get started in minutes, not hours.</p>
+          </div>
+
+          <!-- Self-Hosted -->
+          <div class="rounded-xl border border-border bg-card/50 p-6 transition-colors hover:bg-card">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect>
+                <rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect>
+                <line x1="6" x2="6.01" y1="6" y2="6"></line>
+                <line x1="6" x2="6.01" y1="18" y2="18"></line>
+              </svg>
+            </div>
+            <h3 class="mb-2 text-lg font-semibold">Self-Hosted</h3>
+            <p class="text-sm text-muted-foreground">Run on your own infrastructure. Full control over your data with no vendor lock-in.</p>
+          </div>
+
+          <!-- Developer First -->
+          <div class="rounded-xl border border-border bg-card/50 p-6 transition-colors hover:bg-card">
+            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-muted">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m18 16 4-4-4-4"></path>
+                <path d="m6 8-4 4 4 4"></path>
+                <path d="m14.5 4-5 16"></path>
+              </svg>
+            </div>
+            <h3 class="mb-2 text-lg font-semibold">Developer First</h3>
+            <p class="text-sm text-muted-foreground">Clean REST API, type-safe TypeScript SDK, and a dashboard that gets out of your way.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SDKs Section -->
+    <section id="sdks" class="border-t border-border py-24">
+      <div class="mx-auto max-w-6xl px-4">
+        <div class="mb-16 text-center">
+          <h2 class="mb-4 text-3xl font-bold md:text-4xl">Integrate in minutes</h2>
+          <p class="mx-auto max-w-2xl text-lg text-muted-foreground">
+            Use our TypeScript SDK for server-side evaluation, or call the REST API directly from any language.
+          </p>
+        </div>
+
+        <div class="mx-auto grid max-w-xl gap-4">
+          <!-- JavaScript / TypeScript SDK -->
+          <div class="flex items-center justify-between rounded-xl border border-border bg-card/50 px-6 py-4">
+            <div class="flex items-center gap-3">
+              <svg class="h-5 w-5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m18 16 4-4-4-4"></path>
+                <path d="m6 8-4 4 4 4"></path>
+                <path d="m14.5 4-5 16"></path>
+              </svg>
+              <div>
+                <span class="font-medium">TypeScript SDK</span>
+                <p class="text-xs text-muted-foreground">Node.js, Deno, Bun, edge runtimes</p>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-1 rounded-md bg-secondary px-2.5 py-0.5 text-sm font-medium text-secondary-foreground">
+              <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              Available
+            </span>
+          </div>
+
+          <!-- REST API -->
+          <div class="flex items-center justify-between rounded-xl border border-border bg-card/50 px-6 py-4">
+            <div class="flex items-center gap-3">
+              <svg class="h-5 w-5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                <path d="M2 12h20"></path>
+              </svg>
+              <div>
+                <span class="font-medium">REST API</span>
+                <p class="text-xs text-muted-foreground">Any language, direct HTTP</p>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-1 rounded-md bg-secondary px-2.5 py-0.5 text-sm font-medium text-secondary-foreground">
+              <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+              Available
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Open Source Section -->
+    <section class="border-t border-border py-24">
+      <div class="mx-auto max-w-6xl px-4">
+        <div class="mx-auto max-w-3xl rounded-xl border border-border bg-card/50 py-12 text-center">
+          <div class="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+            <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+            </svg>
+          </div>
+          <h2 class="mb-4 text-2xl font-bold md:text-3xl">Open Source & Free Forever</h2>
+          <p class="mx-auto mb-8 max-w-xl text-muted-foreground">
+            Marshant is fully open source under the MIT license. Self-host for free with no feature limitations or hidden
+            paywalls.
+          </p>
+          <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a
+              href="https://github.com/trunklabs/marshant"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex h-11 items-center justify-center rounded-md border border-border bg-background px-6 text-sm font-medium transition-colors hover:bg-muted"
+            >
+              <svg class="mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              Star on GitHub
+            </a>
+            <a
+              href="https://github.com/trunklabs/marshant"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex h-11 items-center justify-center rounded-md px-6 text-sm font-medium transition-colors hover:bg-muted"
+            >
+              View Source
+              <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cloud Coming Soon -->
+    <section class="border-t border-border py-24">
+      <div class="mx-auto max-w-6xl px-4 text-center">
+        <span class="mb-6 inline-flex items-center rounded-md border border-border px-3 py-1 text-sm font-medium">
+          Coming Soon
+        </span>
+        <h2 class="mb-4 text-2xl font-bold md:text-3xl">Marshant Cloud</h2>
+        <p class="mx-auto max-w-xl text-muted-foreground">
+          Don't want to self-host? We're building a managed cloud version.
+        </p>
+        <p class="mx-auto max-w-xl text-muted-foreground">
+          Join the waitlist to be notified when it
+          launches.
+        </p>
+
+        <!-- Waitlist Form -->
+        <form id="waitlist-form" class="mx-auto mt-6 flex max-w-md flex-col gap-2">
+          <div class="flex gap-2">
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+              class="h-9 flex-1 rounded-md border border-border bg-background px-3 text-sm outline-none placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary"
+            />
+            <button
+              type="submit"
+              class="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+            >
+              Join Waitlist
+            </button>
+          </div>
+          <p id="waitlist-message" class="hidden text-sm text-muted-foreground"></p>
+          <p id="waitlist-error" class="hidden text-sm text-red-500"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-border py-12">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
+        <div class="flex items-center gap-2">
+          <img src="/logo.webp" alt="Marshant Logo" width="28" height="28" class="h-7 w-7 object-contain" />
+          <span class="text-base font-semibold">Marshant</span>
+        </div>
+
+        <nav class="flex flex-wrap items-center justify-center gap-6">
+          <a
+            href="https://github.com/trunklabs/marshant"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            GitHub
+          </a>
+          <a href="#features" class="text-sm text-muted-foreground transition-colors hover:text-foreground">Features</a>
+          <a href="#sdks" class="text-sm text-muted-foreground transition-colors hover:text-foreground">SDKs</a>
+        </nav>
+
+        <p class="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Marshant. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</Layout>
+
+<script>
+  // Theme toggle
+  const toggle = document.getElementById('theme-toggle');
+  toggle?.addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  });
+
+  // Waitlist form
+  const form = document.getElementById('waitlist-form') as HTMLFormElement | null;
+  const message = document.getElementById('waitlist-message');
+  const error = document.getElementById('waitlist-error');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const email = formData.get('email') as string;
+
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Joining...';
+    error?.classList.add('hidden');
+    message?.classList.add('hidden');
+
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        if (message) {
+          message.textContent = "Thanks! We'll notify you when Marshant Cloud launches.";
+          message.classList.remove('hidden');
+        }
+        form.reset();
+      } else {
+        if (error) {
+          error.textContent = data.error || 'Something went wrong. Please try again.';
+          error.classList.remove('hidden');
+        }
+      }
+    } catch {
+      if (error) {
+        error.textContent = 'Something went wrong. Please try again.';
+        error.classList.remove('hidden');
+      }
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Join Waitlist';
+    }
+  });
+</script>

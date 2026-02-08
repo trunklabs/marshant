@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { standardSchemaResolver } from '@hookform/resolvers/standard-schema';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Plus, Trash2, GripVertical, Pencil, X, Check } from 'lucide-react';
@@ -63,8 +63,8 @@ export function GatesConfigDialog({ flag, environment, config, open, onOpenChang
   }, [flag.valueType]);
 
   // Add gate form
-  const addForm = useForm<CreateGateInput>({
-    resolver: zodResolver(createGateSchema),
+  const addForm = useForm({
+    resolver: standardSchemaResolver(createGateSchema),
     mode: 'onTouched',
     defaultValues: {
       type: 'boolean',
@@ -588,7 +588,7 @@ function GateRow({
   }, [gate]);
 
   const form = useForm<UpdateGateInput>({
-    resolver: zodResolver(updateGateSchema),
+    resolver: standardSchemaResolver(updateGateSchema) as never,
     mode: 'onTouched',
     defaultValues: getDefaultEditValues(),
   });
