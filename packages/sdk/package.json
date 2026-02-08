@@ -2,6 +2,9 @@
   "name": "@marshant/sdk",
   "version": "0.1.0",
   "private": false,
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/trunklabs/marshant.git",
@@ -19,7 +22,8 @@
   },
   "scripts": {
     "build": "tsup",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "pnpm build"
   },
   "devDependencies": {
     "@marshant/core": "workspace:*",
