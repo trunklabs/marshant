@@ -1,5 +1,11 @@
 # @marshant/web
 
+## 0.1.1
+
+### Patch Changes
+
+- 986dfa0: Re-release build fix
+
 ## 0.1.0
 
 ### Minor Changes
