@@ -8,6 +8,10 @@
   [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 </div>
 
+> [!WARNING]
+> The idea for this project came up during a one-day hackathon. We took it further and polished over a short period of time.
+> However, as it currently stands, we do not recommend using it for production workloads.
+
 ---
 
 ## 🚀 Overview
