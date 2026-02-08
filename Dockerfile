@@ -1,6 +1,7 @@
 FROM node:22.19-alpine3.22 AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+ENV NEXT_OUTPUT_MODE="standalone"
 ENV CI="true"
 RUN corepack enable
 
