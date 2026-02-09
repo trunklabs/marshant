@@ -6,7 +6,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", "lib/**", "build/**", ".next/**"],
+      "outputs": ["dist/**", "lib/**", "build/**", ".next/**", ".vercel/output/**"],
       "env": ["RESEND_API_KEY", "RESEND_SEGMENT_ID"]
     },
     "lint": {
