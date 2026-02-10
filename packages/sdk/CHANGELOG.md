@@ -1,5 +1,11 @@
 # @marshant/sdk
 
+## 0.1.2
+
+### Patch Changes
+
+- 88b5851: Add missing readme
+
 ## 0.1.1
 
 ### Patch Changes
