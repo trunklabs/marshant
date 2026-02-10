@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "group:monorepos", "helpers:pinGitHubActionDigests"],
+  "packageRules": [
+    {
+      "description": "Pin Node.js to v24 (LTS)",
+      "matchPackageNames": ["node", "@types/node"],
+      "allowedVersions": "24.x"
+    },
+    {
+      "description": "Pin Docker node base image to v24",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["node"],
+      "allowedVersions": "/^24\\./"
+    }
+  ]
+}
