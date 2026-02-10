@@ -12,6 +12,13 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["node"],
       "allowedVersions": "/^24\\./"
+    },
+    {
+      "description": "Group postgres updates across dev and e2e compose files",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["postgres"],
+      "matchFileNames": ["compose.yaml", "services/web/e2e/compose.yaml"],
+      "groupName": "postgres"
     }
   ]
 }
