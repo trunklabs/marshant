@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@marshant/core": "workspace:*",
-    "@types/node": "24.10.12",
+    "@types/node": "25.2.2",
     "tsup": "8.5.1",
     "typescript": "5.9.3"
   }
