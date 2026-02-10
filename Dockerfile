@@ -1,4 +1,4 @@
-FROM node:22.19-alpine3.22 AS base
+FROM node:24-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 ENV NEXT_OUTPUT_MODE="standalone"
@@ -12,7 +12,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
     pnpm install -w -F @marshant/web... --frozen-lockfile && \
     pnpm exec turbo @marshant/web#build
 
-FROM node:22.19-alpine3.22 AS web
+FROM node:24-alpine AS web
 WORKDIR /prod/web
 ENV NODE_ENV=production
 COPY --from=build-web /usr/src/app/services/web/.next/standalone ./
