@@ -59,7 +59,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "4.1.18",
     "@types/bcryptjs": "3.0.0",
-    "@types/node": "24.10.12",
+    "@types/node": "24.10.13",
     "@types/pg": "8.16.0",
     "@types/react": "19.2.13",
     "@types/react-dom": "19.2.3",
