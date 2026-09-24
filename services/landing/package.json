@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "astro": "5.17.1",
-    "@astrojs/vercel": "9.0.4"
+    "@astrojs/vercel": "10.0.2"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.1.18",
